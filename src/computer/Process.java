@@ -24,6 +24,7 @@ public class Process {
     public Process(int id, int cpuTime, int arrivalTime) {
         this(id, cpuTime);
         this.arrivalTime = arrivalTime;
+        if (cpuTime == 0) this.finishTime = arrivalTime;
     }
 
     public void doStep() {
