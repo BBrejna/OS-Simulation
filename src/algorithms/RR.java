@@ -15,7 +15,10 @@ public class RR extends Algorithm {
     }
 
     public Process getActiveProcess() {
-        if (index >= processesList.size()) index = 0;
+        if (index >= processesList.size()) {
+            index = 0;
+            remainingDelta = deltaTime;
+        }
 
         if (remainingDelta == 0) {
             remainingDelta = deltaTime;

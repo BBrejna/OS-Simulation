@@ -33,7 +33,7 @@ public class Scheduler {
 
         if (!activeList.isEmpty()) {
             Process p = curAlgorithm.getActiveProcess();
-//            System.out.println(CPU.curTime + " " + p.getId());
+            System.out.println(CPU.curTime + " " + p.getId());
             p.doStep();
         }
     }

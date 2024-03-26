@@ -17,7 +17,7 @@ public class SJF extends Algorithm {
             return active;
         }
 
-        Process active = processesList.getFirst();
+        active = processesList.getFirst();
         for (Process p : processesList) {
             if (p.getRemainingTime() < active.getRemainingTime()) {
                 active = p;
