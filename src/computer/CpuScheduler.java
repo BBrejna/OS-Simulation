@@ -29,7 +29,6 @@ public class CpuScheduler {
 
         if (!activeList.isEmpty()) {
             Process p = algorithm.getActiveProcess();
-//            System.out.println(CPU.curTime + " " + p.getId());
             p.doStep();
         }
     }

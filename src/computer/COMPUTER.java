@@ -41,12 +41,6 @@ public class COMPUTER {
         curTime=0;
     }
 
-    public void restartComputer() {
-        clearLists();
-        provider.restartProvider();
-        curTime=0;
-    }
-
     public void writeStats() {
         System.out.println("-------------------------------------------");
         System.out.println("Algorithm: "+cpuSch.algorithm.getClass().getSimpleName());

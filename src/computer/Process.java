@@ -8,12 +8,6 @@ public class Process {
     private int remainingTime;
     public int finishTime;
 
-    public Process() {
-        id=-1;
-        cpuTime = 0;
-        remainingTime = 0;
-        finishTime = 0;
-    }
     public Process(int id, int cpuTime) {
         this.id = id;
         this.cpuTime = cpuTime;

@@ -27,7 +27,6 @@ public class RR extends Algorithm {
             remainingDelta = deltaTime;
             index++;
         }
-//        System.out.println(processesList + " " + index);
 
         if (index >= processesList.size()) index = 0;
         remainingDelta--;
