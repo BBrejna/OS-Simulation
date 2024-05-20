@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.cpuAlgorithms;
 
 import java.util.ArrayList;
 import computer.Process;
@@ -12,6 +12,9 @@ public class RR extends Algorithm {
         super(processesList);
         index = 0;
         remainingDelta = deltaTime;
+    }
+    public RR() {
+        this(new ArrayList<>());
     }
 
     public Process getActiveProcess() {

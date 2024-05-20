@@ -18,7 +18,7 @@ public class Process {
         this.id = id;
         this.cpuTime = cpuTime;
         this.remainingTime = cpuTime;
-        this.arrivalTime = CPU.curTime-1;
+        this.arrivalTime = COMPUTER.curTime-1;
         this.finishTime = (cpuTime == 0 ? arrivalTime : -1);
     }
     public Process(int id, int cpuTime, int arrivalTime) {
@@ -29,7 +29,7 @@ public class Process {
 
     public void doStep() {
         remainingTime--;
-        if (remainingTime == 0) finishTime = CPU.curTime;
+        if (remainingTime == 0) finishTime = COMPUTER.curTime;
     }
 
     public boolean isDone() {

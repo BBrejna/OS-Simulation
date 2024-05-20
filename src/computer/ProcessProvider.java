@@ -1,44 +1,65 @@
 package computer;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class ProcessProvider {
-    public int id = 0;
-    static boolean active;
-    static int timeNext;
     public static int maxCpuTime = 30;
     public static int maxDeltaTime = 30;
+    public int totalProcessesNumber;
+    public int processesGenerated=0;
+    public int timeNext=0;
 
-    public ProcessProvider() {
-        active = true;
-    }
+    private ArrayList<Process> processes = new ArrayList<>();
 
-    public Process getNextProcess() {
+    private void generateProcesses() {
+        processes.clear();
         Random random = new Random();
-        Process p = new Process(id++, random.nextInt(maxCpuTime));
-
-        timeNext = random.nextInt(maxDeltaTime);
-
-        return p;
+        int curTime = 0;
+        for (int i = 0; i < totalProcessesNumber; i++) {
+            int cpuTime = random.nextInt(1,maxCpuTime+1);
+            curTime = curTime + random.nextInt(maxDeltaTime);
+            processes.add(new Process(i, cpuTime, curTime));
+        }
     }
 
-    public boolean isReady() {
-        if (!active) return false;
-        return timeNext <= 0;
+    public void restartTime() {
+        for (int i = 0; i < totalProcessesNumber; i++) {
+            int cpuTime = processes.get(i).getCpuTime();
+            int arrivalTime = processes.get(i).getArrivalTime();
+            processes.set(i, new Process(i,cpuTime,arrivalTime));
+        }
+        timeNext = processes.get(0).getArrivalTime();
+        processesGenerated = 0;
     }
 
-    public static boolean isActive() {
-        return active;
+    public void restartProvider() {
+        generateProcesses();
+        restartTime();
     }
 
-    public static void switchOn() {
-        active = true;
-    }
-    public static void switchOff() {
-        active = false;
+    public ProcessProvider(int totalProcessesNumber) {
+        this.totalProcessesNumber = totalProcessesNumber;
+
+        restartProvider();
     }
 
-    public static void doWait() {
-        timeNext--;
+    private void newProcess() {
+        Process p = processes.get(processesGenerated++);
+
+        if (processesGenerated == totalProcessesNumber) {
+            timeNext = -1;
+        } else {
+            timeNext = processes.get(processesGenerated).getArrivalTime();
+        }
+
+        COMPUTER.registerProcess(p);
     }
+
+
+    public void doStep() {
+        if (processesGenerated == totalProcessesNumber) return;
+        while (COMPUTER.curTime == timeNext) newProcess();
+    }
+
 }

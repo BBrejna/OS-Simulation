@@ -1,4 +1,4 @@
-package algorithms;
+package algorithms.cpuAlgorithms;
 
 import computer.Process;
 
@@ -10,6 +10,9 @@ public class SJF extends Algorithm {
 
     public SJF(ArrayList<Process> processesList) {
         super(processesList);
+    }
+    public SJF() {
+        this(new ArrayList<>());
     }
 
     public Process getActiveProcess() {
