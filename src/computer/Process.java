@@ -7,6 +7,7 @@ public class Process {
     private int arrivalTime;
     private int remainingTime;
     public int finishTime;
+    int state = 0;
 
     public Process(int id, int cpuTime) {
         this.id = id;
@@ -19,6 +20,11 @@ public class Process {
         this(id, cpuTime);
         this.arrivalTime = arrivalTime;
         if (cpuTime == 0) this.finishTime = arrivalTime;
+    }
+
+    public void getMemoryAnswer(Integer answer) {
+        System.out.println("Process "+id+" received "+answer+" from HDD");
+        state = 0;
     }
 
     public void doStep() {
