@@ -20,14 +20,14 @@ public class SSTF extends MemAlgorithm {
 
 
     public void doNormal(){
-        if (position == waitingTasks.get(0).cylinder) {
+        MemTask.compareTasks(waitingTasks, position);
+        while (!waitingTasks.isEmpty() && position == waitingTasks.get(0).cylinder) {
             //System.out.println("Zakończono zadanie " + waitingTasks.get(0));
             answerTask(waitingTasks, 0);
 //            waitingTasks.remove(0);
         }
 
-        if (waitingTasks.size() != 0) {
-            MemTask.compareTasks(waitingTasks, position);
+        if (!waitingTasks.isEmpty()) {
             if (waitingTasks.get(0).cylinder > position) {
                 position++;
             }else if(waitingTasks.get(0).cylinder < position) {

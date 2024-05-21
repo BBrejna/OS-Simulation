@@ -20,7 +20,7 @@ public class Process {
     void generateRequests(int SIZE) {
         Random random = new Random();
 
-        for (int i = 0; i < remainingTime; i++) {
+        for (int i = 0; i < cpuTime-1; i++) {
             if (random.nextInt(10) < 5) { // todo < 3
                 if (random.nextInt(3) < 1) { //todo < 2
                     // RAM request
@@ -54,12 +54,12 @@ public class Process {
 
     public void doStep() {
         if (state != 0) return;
-        remainingTime--;
-        while (!memoryRequests.isEmpty() && memoryRequests.get(0).first == cpuTime-remainingTime) {
+        if (!memoryRequests.isEmpty() && memoryRequests.get(0).first == cpuTime-remainingTime) {
             COMPUTER.getMemoryScheduler().getMemoryRequest(this, memoryRequests.get(0).second, COMPUTER.curTime+memoryRequests.get(0).third);
             memoryRequests.remove(0);
             state = 1;
         }
+        remainingTime--;
         if (remainingTime == 0) finishTime = COMPUTER.curTime;
     }
 
@@ -87,7 +87,7 @@ public class Process {
 
     public int getTurnAroundTime() {
         if (!isDone()) return -1;
-        return finishTime - arrivalTime;
+        return finishTime - arrivalTime+1;
     }
     public int getWaitTime() {
         if (!isDone()) return -1;

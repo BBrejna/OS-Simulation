@@ -11,7 +11,7 @@ public class FCFS extends MemAlgorithm {
 
     public void doNormal(){
         //fcfs
-        if (position == waitingTasks.get(0).cylinder) {
+        while (!waitingTasks.isEmpty() && position == waitingTasks.get(0).cylinder) {
             //System.out.println("Zakończono zadanie " + waitingTasks.get(0));
             answerTask(waitingTasks,0);
 //            waitingTasks.remove(0);

@@ -17,20 +17,14 @@ public class SCAN extends MemAlgorithm {
                 waitingTasks.remove(i);
             }*/
 
-
-        if (waitingTasks.get(0).cylinder == position) {
-            //System.out.println("Zakończono zadanie priorytetowe " + waitingTasks.get(0));
-            answerTask(waitingTasks, 0);
-//            waitingTasks.remove(0);
-        }
+        for(int i = 0; i < waitingTasks.size(); i++)
+            if (position == waitingTasks.get(i).cylinder) {
+                //System.out.println("Zakończono zadanie " + waitingTasks.get(i));
+                answerTask(waitingTasks,i);
+                i--;
+            }
 
         if (!waitingTasks.isEmpty()) {
-
-            if (beginToEnd)
-                position++;
-            else
-                position--;
-
             if (position == SIZE && beginToEnd) {
                 beginToEnd = false;
                 MemTask.compareCurrentPositionB(waitingTasks, position);
@@ -41,6 +35,12 @@ public class SCAN extends MemAlgorithm {
                 MemTask.compareCurrentPositionF(waitingTasks, position);
 
             }
+
+            if (beginToEnd)
+                position++;
+            else
+                position--;
+
             steps++;
         }
     }
