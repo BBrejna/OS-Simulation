@@ -3,7 +3,7 @@ package algorithms.cpuAlgorithms;
 import java.util.ArrayList;
 import computer.Process;
 
-public class RR extends Algorithm {
+public class RR extends CpuAlgorithm {
     public static int deltaTime = 1;
     int index;
     int remainingDelta;

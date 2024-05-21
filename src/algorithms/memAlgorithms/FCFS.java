@@ -1,6 +1,6 @@
 package algorithms.memAlgorithms;
 
-public class FCFS extends Algorithm {
+public class FCFS extends MemAlgorithm {
 
     public FCFS(int size, int MODE) {
         super(size, MODE);

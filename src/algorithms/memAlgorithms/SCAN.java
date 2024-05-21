@@ -1,6 +1,6 @@
 package algorithms.memAlgorithms;
 
-public class SCAN extends Algorithm {
+public class SCAN extends MemAlgorithm {
 
     public SCAN(int size, int MODE) {
         super(size, MODE);
@@ -33,21 +33,16 @@ public class SCAN extends Algorithm {
 
             if (position == SIZE && beginToEnd) {
                 beginToEnd = false;
-                Task.compareCurrentPositionB(waitingTasks, position);
+                MemTask.compareCurrentPositionB(waitingTasks, position);
 
             }
             if (position == 0 && !beginToEnd) {
                 beginToEnd = true;
-                Task.compareCurrentPositionF(waitingTasks, position);
+                MemTask.compareCurrentPositionF(waitingTasks, position);
 
             }
             steps++;
         }
-    }
-
-    public void normal(){
-        Task.compareCurrentPositionF(waitingTasks, position);
-        super.normal();
     }
 
 

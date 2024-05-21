@@ -1,30 +1,53 @@
 package computer;
 
+import algorithms.memAlgorithms.MemAlgorithm;
+
 import java.util.ArrayList;
+import java.util.Random;
 
 public class COMPUTER {
     public static ProcessProvider provider;
     private final CpuScheduler cpuSch;
+    private static MemScheduler memSch;
 
     public static int curTime=0;
     public static ArrayList<Process> activeList = new ArrayList<>();
     public static ArrayList<Process> finishedList = new ArrayList<>();
+    public static ArrayList<Integer> memory = new ArrayList<>();
 
-    public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch) {
-        this.cpuSch = cpuSch;
+    public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch) {
         COMPUTER.provider = provider;
+        this.cpuSch = cpuSch;
+        COMPUTER.memSch = memSch;
+
+        int SIZE = memSch.SIZE;
+        Random random = new Random();
+        for (int i = 0; i <= SIZE; i++) {
+            memory.add(random.nextInt((int)1e9));
+        }
     }
 
     private void doStep() {
         provider.doStep();
         cpuSch.doStep();
+        memSch.doStep();
     }
 
     public void doWork() {
         while (!activeList.isEmpty() || provider.processesGenerated < provider.totalProcessesNumber) {
             doStep();
             curTime++;
+//            System.out.println("Post "+curTime+" "+activeList.size()+" "+provider.processesGenerated+" "+provider.totalProcessesNumber);
+//            for (Process p : activeList) {
+//                System.out.println(p);
+//            }
+//            System.out.println(memSch.algorithm);
         }
+    }
+
+    public static MemScheduler getMemoryScheduler() { return memSch; }
+    public static void memAnswer(Process p, int answer) {
+        p.getMemoryAnswer(answer);
     }
 
     public static void registerProcess(Process p) {
@@ -43,7 +66,13 @@ public class COMPUTER {
 
     public void writeStats() {
         System.out.println("-------------------------------------------");
-        System.out.println("Algorithm: "+cpuSch.algorithm.getClass().getSimpleName());
+        System.out.println("CPU Algorithm: "+cpuSch.algorithm.getClass().getSimpleName());
+        System.out.println("MEM Algorithm: "+memSch.algorithm.getClass().getSimpleName());
+        System.out.print("MEM Algorithm mode: ");
+        if (memSch.algorithm.MODE == 0) System.out.println("normal");
+        else if (memSch.algorithm.MODE == 1) System.out.println("edf");
+        else if (memSch.algorithm.MODE == 2) System.out.println("fd-scan");
+
         double avg_wait = 0, avg_turnaround = 0;
         ArrayList<Process> processes = COMPUTER.finishedList;
         for (Process p : processes) {
@@ -59,5 +88,7 @@ public class COMPUTER {
         System.out.println("Avg wait time: " + avg_wait);
         System.out.println("# of processes: " + processes.size());
         System.out.println("Cycles done: " + COMPUTER.curTime);
+        System.out.println("HDD steps done: " + COMPUTER.memSch.algorithm.getSteps());
+        System.out.println("HDD rejected priority: " + COMPUTER.memSch.algorithm.getRejected());
     }
 }

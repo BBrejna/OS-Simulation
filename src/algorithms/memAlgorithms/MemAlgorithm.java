@@ -2,10 +2,11 @@ package algorithms.memAlgorithms;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
+
+import computer.COMPUTER;
 import computer.Process;
 
-public abstract class Algorithm {
+public abstract class MemAlgorithm {
 
     int steps = 0;
     int position = 0;
@@ -13,57 +14,40 @@ public abstract class Algorithm {
     int rejected = 0;
     int tasksLeft = 0;
     boolean beginToEnd = true;
-    int SIZE;
-    int MODE;
+    public int SIZE;
+    public int MODE;
 
-    ArrayList<Integer> memory = new ArrayList<>();
 
-    ArrayList<Task> waitingTasks = new ArrayList<Task>();
-    ArrayList<Task> waitingPriorityTasks = new ArrayList<Task>();
+    ArrayList<MemTask> waitingTasks = new ArrayList<MemTask>();
+    ArrayList<MemTask> waitingPriorityTasks = new ArrayList<MemTask>();
 
-    public Algorithm(int SIZE, int MODE) {
+    public MemAlgorithm(int SIZE, int MODE) {
         this(SIZE, MODE, 0);
     }
-    public Algorithm(int SIZE, int MODE, int position) {
+    public MemAlgorithm(int SIZE, int MODE, int position) {
         this.SIZE = SIZE;
         this.MODE = MODE;
         this.position = position;
 
-        Random random = new Random();
-        for (int i = 0; i <= SIZE; i++) {
-            memory.set(0,random.nextInt((int)1e9));
-        }
     }
 
-    public void doStep() {
-        if (MODE == 0) normal();
-        else if (MODE == 1) edf();
-        else if (MODE == 2) fdScan();
-    }
-
-    public void registerTask(Process p, int cylinder, int toDoTime) {
-        if (toDoTime == -1 || MODE == 0) {
-            waitingTasks.add(new Task(p,cylinder,toDoTime));
+    public void registerTask(Process p, int cylinder, int toDoTime, boolean priority) {
+        if (priority) {
+            waitingPriorityTasks.add(new MemTask(p,cylinder,toDoTime));
         } else {
-            waitingPriorityTasks.add(new Task(p,cylinder,toDoTime));
+            waitingTasks.add(new MemTask(p,cylinder,toDoTime));
         }
     }
-    public void registerTask(Process p, int cylinder) {
-        registerTask(p, cylinder, -1);
-    }
 
-    protected void answerTask(Task t) {
-        t.p.getMemoryAnswer(memory.get(position));
-    }
-    protected void answerTask(ArrayList<Task> tasksList, int id) {
-        Task t = tasksList.get(id);
-        answerTask(t);
+    protected void answerTask(ArrayList<MemTask> tasksList, int id) {
+        MemTask t = tasksList.get(id);
+        COMPUTER.memAnswer(t.p, COMPUTER.memory.get(position));
         tasksList.remove(id);
     }
 
     protected void doPriorityEdf(){
 
-        Collections.sort(waitingPriorityTasks, Task.toDoTimeComparator);
+        Collections.sort(waitingPriorityTasks, MemTask.toDoTimeComparator);
         if (!waitingPriorityTasks.isEmpty() && position == waitingPriorityTasks.get(0).cylinder)
             if (waitingPriorityTasks.get(0).toDoTime < Math.abs(waitingPriorityTasks.get(0).cylinder - position))
                 rejected++;
@@ -73,7 +57,7 @@ public abstract class Algorithm {
             answerTask(waitingPriorityTasks,0);
         }
 
-        Collections.sort(waitingPriorityTasks, Task.toDoTimeComparator);
+        Collections.sort(waitingPriorityTasks, MemTask.toDoTimeComparator);
 
         if (!waitingPriorityTasks.isEmpty() ) {
 
@@ -91,7 +75,7 @@ public abstract class Algorithm {
 
     protected void doPriorityFdScan(){
 
-        Collections.sort(waitingPriorityTasks, Task.toDoTimeComparator);
+        Collections.sort(waitingPriorityTasks, MemTask.toDoTimeComparator);
         if (!waitingPriorityTasks.isEmpty() && position == waitingPriorityTasks.get(0).cylinder)
             if (waitingPriorityTasks.get(0).toDoTime < Math.abs(waitingPriorityTasks.get(0).cylinder - position))
                 rejected++;
@@ -112,7 +96,7 @@ public abstract class Algorithm {
                 i--;
             }
 
-        Collections.sort(waitingPriorityTasks, Task.toDoTimeComparator);
+        Collections.sort(waitingPriorityTasks, MemTask.toDoTimeComparator);
 
         if (!waitingPriorityTasks.isEmpty()) {
             if (waitingPriorityTasks.get(0).cylinder > position)
@@ -154,5 +138,22 @@ public abstract class Algorithm {
 
     public int getRejected() {
         return rejected;
+    }
+    public int getSteps() { return steps; }
+
+    @Override
+    public String toString() {
+        return "MemAlgorithm{" +
+                "steps=" + steps +
+                ", position=" + position +
+                ", currentTime=" + currentTime +
+                ", rejected=" + rejected +
+                ", tasksLeft=" + tasksLeft +
+                ", beginToEnd=" + beginToEnd +
+                ", SIZE=" + SIZE +
+                ", MODE=" + MODE +
+                ", waitingTasks=" + waitingTasks +
+                ", waitingPriorityTasks=" + waitingPriorityTasks +
+                '}';
     }
 }

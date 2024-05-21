@@ -5,12 +5,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import computer.Process;
 
-public class Task {
+public class MemTask {
     public Process p;
     int cylinder;
     int toDoTime;
 
-    public Task(Process p, int cylinder, int toDoTime) {
+    public MemTask(Process p, int cylinder, int toDoTime) {
         this.p = p;
         this.cylinder = cylinder;
         this.toDoTime = toDoTime;
@@ -19,9 +19,9 @@ public class Task {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof Task))
+        if (!(o instanceof MemTask))
             return false;
-        Task task = (Task) o;
+        MemTask task = (MemTask) o;
         return p == task.p &&
                 cylinder == task.cylinder &&
                 toDoTime == task.toDoTime;
@@ -33,21 +33,21 @@ public class Task {
 //        }
 //    };
 
-    public static  Comparator<Task> closestTaskComparator = new Comparator<Task>() {
-        public int compare(Task task1, Task task2) {
+    public static  Comparator<MemTask> closestTaskComparator = new Comparator<MemTask>() {
+        public int compare(MemTask task1, MemTask task2) {
             return task1.cylinder - task2.cylinder;
         }
     };
 
-    public static Comparator<Task> toDoTimeComparator = new Comparator<Task>() {
-        public int compare(Task task1, Task task2) {
+    public static Comparator<MemTask> toDoTimeComparator = new Comparator<MemTask>() {
+        public int compare(MemTask task1, MemTask task2) {
             return task1.toDoTime - task2.toDoTime;
         }
     };
 
     public static void compareCurrentPositionF(ArrayList tasks, int position) {
-        Comparator<Task> closestTaskComparator = new Comparator<Task>() {
-            public int compare(Task task1, Task task2) {
+        Comparator<MemTask> closestTaskComparator = new Comparator<MemTask>() {
+            public int compare(MemTask task1, MemTask task2) {
                 if (task1.cylinder - position > 0) {
                     if (task2.cylinder - position > 0)
                         return (task1.cylinder - position) - (task2.cylinder - position);
@@ -62,8 +62,8 @@ public class Task {
     }
 
     public static void compareCurrentPositionB(ArrayList tasks, int position) {
-        Comparator<Task> closestTaskComparator = new Comparator<Task>() {
-            public int compare(Task task1, Task task2) {
+        Comparator<MemTask> closestTaskComparator = new Comparator<MemTask>() {
+            public int compare(MemTask task1, MemTask task2) {
                 if (task1.cylinder - position < 0) {
                     if (task2.cylinder - position < 0)
                         return Math.abs(task1.cylinder - position) - Math.abs(task2.cylinder - position);
@@ -78,8 +78,8 @@ public class Task {
     }
 
     public static void compareTasks(ArrayList tasks, int position) {
-        Comparator<Task> closestTaskComparator = new Comparator<Task>() {
-            public int compare(Task task1, Task task2) {
+        Comparator<MemTask> closestTaskComparator = new Comparator<MemTask>() {
+            public int compare(MemTask task1, MemTask task2) {
                 return Math.abs(task1.cylinder - position) - Math.abs(task2.cylinder - position);
             }
         };
@@ -109,5 +109,14 @@ public class Task {
         Collections.sort(tasks, closestTaskToCylinderComparator);
     }
 */
+
+    @Override
+    public String toString() {
+        return "MemTask{" +
+                "p=" + p +
+                ", cylinder=" + cylinder +
+                ", toDoTime=" + toDoTime +
+                '}';
+    }
 }
 

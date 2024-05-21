@@ -2,7 +2,7 @@ package algorithms.memAlgorithms;
 
 import computer.Process;
 
-public class SSTF extends Algorithm {
+public class SSTF extends MemAlgorithm {
 
     public SSTF(int size, int MODE) {
         super(size, MODE);
@@ -11,10 +11,11 @@ public class SSTF extends Algorithm {
         super(size, MODE, position);
     }
 
-    public void registerTask (Process p, int cylinder, int toDoTime){
-        super.registerTask(p, cylinder, toDoTime);
+    @Override
+    public void registerTask (Process p, int cylinder, int toDoTime, boolean priority){
+        super.registerTask(p, cylinder, toDoTime, priority);
 
-        Task.compareTasks(waitingTasks, position);
+        MemTask.compareTasks(waitingTasks, position);
     }
 
 
@@ -26,7 +27,7 @@ public class SSTF extends Algorithm {
         }
 
         if (waitingTasks.size() != 0) {
-            Task.compareTasks(waitingTasks, position);
+            MemTask.compareTasks(waitingTasks, position);
             if (waitingTasks.get(0).cylinder > position) {
                 position++;
             }else if(waitingTasks.get(0).cylinder < position) {

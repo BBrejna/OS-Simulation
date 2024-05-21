@@ -4,7 +4,7 @@ import computer.Process;
 
 import java.util.ArrayList;
 
-public class SJF extends Algorithm {
+public class SJF extends CpuAlgorithm {
 
     Process active;
 

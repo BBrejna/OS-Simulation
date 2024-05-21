@@ -9,6 +9,7 @@ public class ProcessProvider {
     public int totalProcessesNumber;
     public int processesGenerated=0;
     public int timeNext=0;
+    private int SIZE;
 
     private ArrayList<Process> processes = new ArrayList<>();
 
@@ -19,7 +20,7 @@ public class ProcessProvider {
         for (int i = 0; i < totalProcessesNumber; i++) {
             int cpuTime = random.nextInt(1,maxCpuTime+1);
             curTime = curTime + random.nextInt(maxDeltaTime);
-            processes.add(new Process(i, cpuTime, curTime));
+            processes.add(new Process(i, cpuTime, curTime, SIZE));
         }
     }
 
@@ -27,7 +28,7 @@ public class ProcessProvider {
         for (int i = 0; i < totalProcessesNumber; i++) {
             int cpuTime = processes.get(i).getCpuTime();
             int arrivalTime = processes.get(i).getArrivalTime();
-            processes.set(i, new Process(i,cpuTime,arrivalTime));
+            processes.set(i, new Process(i,cpuTime,arrivalTime,SIZE));
         }
         timeNext = processes.get(0).getArrivalTime();
         processesGenerated = 0;
@@ -38,8 +39,9 @@ public class ProcessProvider {
         restartTime();
     }
 
-    public ProcessProvider(int totalProcessesNumber) {
+    public ProcessProvider(int totalProcessesNumber, int SIZE) {
         this.totalProcessesNumber = totalProcessesNumber;
+        this.SIZE = SIZE;
 
         restartProvider();
     }

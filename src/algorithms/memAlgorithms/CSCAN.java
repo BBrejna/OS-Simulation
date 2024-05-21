@@ -1,6 +1,6 @@
 package algorithms.memAlgorithms;
 
-public class CSCAN extends Algorithm{
+public class CSCAN extends MemAlgorithm {
     boolean lockedReturn = false;
 
     public CSCAN(int size, int MODE) {
@@ -28,7 +28,7 @@ public class CSCAN extends Algorithm{
             }
 
         if (!waitingTasks.isEmpty()) {
-            Task.compareCurrentPositionF(waitingTasks, position);
+            MemTask.compareCurrentPositionF(waitingTasks, position);
             if (position == SIZE) {
                 lockedReturn = true;
                 position--;

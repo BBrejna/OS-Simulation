@@ -3,11 +3,11 @@ package algorithms.cpuAlgorithms;
 import java.util.*;
 import computer.Process;
 
-public abstract class Algorithm {
+public abstract class CpuAlgorithm {
 
     ArrayList<Process> processesList;
 
-    public Algorithm(ArrayList<Process> processesList) {
+    public CpuAlgorithm(ArrayList<Process> processesList) {
         this.processesList = processesList;
     }
 

@@ -2,14 +2,14 @@ package computer;
 
 import java.util.*;
 
-import algorithms.cpuAlgorithms.Algorithm;
+import algorithms.cpuAlgorithms.CpuAlgorithm;
 
 public class CpuScheduler {
-    public final Algorithm algorithm;
+    public final CpuAlgorithm algorithm;
     private ArrayList<Process> activeList = null;
     private ArrayList<Process> finishedList = null;
 
-    public CpuScheduler(Algorithm algorithm) {
+    public CpuScheduler(CpuAlgorithm algorithm) {
         this.algorithm=algorithm;
         fetchProcessLists();
     }

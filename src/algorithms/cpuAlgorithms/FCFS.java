@@ -3,7 +3,7 @@ package algorithms.cpuAlgorithms;
 import java.util.*;
 import computer.Process;
 
-public class FCFS extends Algorithm {
+public class FCFS extends CpuAlgorithm {
 
     Queue<Process> processesQueue;
 

@@ -3,7 +3,7 @@ package algorithms.cpuAlgorithms;
 import java.util.ArrayList;
 import computer.Process;
 
-public class SRTF extends Algorithm {
+public class SRTF extends CpuAlgorithm {
 
     public SRTF(ArrayList<Process> processesList) {
         super(processesList);
