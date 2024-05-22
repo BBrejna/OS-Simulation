@@ -1,5 +1,6 @@
 package computer;
 
+import tools.Pair;
 import tools.Tripple;
 
 import java.util.ArrayList;
@@ -15,20 +16,24 @@ public class Process {
     public int finishTime;
     int state = 0;
     //frame allocation
+    int pageCount;
 
 
     private List<Integer> pageReferences;
 
     ArrayList<Tripple<Integer,Integer,Integer>> memoryRequests = new ArrayList<>();
-//    ArrayList<Pair<Integer,Integer>> ramRequests = new ArrayList<>();
+    ArrayList<Pair<Integer,Integer>> ramRequests = new ArrayList<>();
 
     void generateRequests(int SIZE) {
         Random random = new Random();
+
+        pageCount = 1+random.nextInt(100);
 
         for (int i = 0; i < cpuTime-1; i++) {
             if (random.nextInt(10) < 5) { // todo < 3
                 if (random.nextInt(3) < 1) { //todo < 2
                     // RAM request
+                    ramRequests.add(new Pair(i,random.nextInt(pageCount)));
                 } else {
                     // MEM request
                     memoryRequests.add(new Tripple(i, random.nextInt(SIZE+1), random.nextInt(10)<8 ? -1 : i+random.nextInt(SIZE/2)));
@@ -63,6 +68,11 @@ public class Process {
             COMPUTER.getMemoryScheduler().getMemoryRequest(this, memoryRequests.get(0).second, COMPUTER.curTime+memoryRequests.get(0).third);
             memoryRequests.remove(0);
             state = 1;
+        }
+        if (!ramRequests.isEmpty() && ramRequests.get(0).first == cpuTime-remainingTime) {
+            COMPUTER.getRamScheduler().getRamRequest(this, ramRequests.get(0).second);
+            ramRequests.remove(0);
+            state = 2;
         }
         remainingTime--;
         if (remainingTime == 0) finishTime = COMPUTER.curTime;

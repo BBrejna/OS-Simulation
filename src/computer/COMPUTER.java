@@ -1,5 +1,6 @@
 package computer;
 
+import algorithms.ramAlgorithms.RamTask;
 import statistics.InstanceInfo;
 import statistics.StatisticsHandler;
 
@@ -20,12 +21,13 @@ public class COMPUTER {
     public static ArrayList<Integer> memory = new ArrayList<>();
 
     //frame allocation
-    public static ArrayList<Integer> frames = new ArrayList<>();
+    public static ArrayList<RamTask> frames = new ArrayList<>();
 
-    public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch) {
+    public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch, RamScheduler ramSch) {
         COMPUTER.provider = provider;
         this.cpuSch = cpuSch;
         COMPUTER.memSch = memSch;
+        COMPUTER.ramSch = ramSch;
 
 
 
@@ -34,13 +36,18 @@ public class COMPUTER {
         for (int i = 0; i <= SIZE; i++) {
             memory.add(random.nextInt((int)1e9));
         }
+
+        SIZE = ramSch.SIZE;
+        for (int i = 0; i <= SIZE; i++) {
+            frames.add(new RamTask(null,-1));
+        }
     }
 
     private void doStep() {
         provider.doStep();
         cpuSch.doStep();
         memSch.doStep();
-//        ramSch.doStep();
+        ramSch.doStep();
     }
 
     public void doWork() {
@@ -56,6 +63,7 @@ public class COMPUTER {
     }
 
     public static MemScheduler getMemoryScheduler() { return memSch; }
+    public static RamScheduler getRamScheduler() { return ramSch; }
     public static void memAnswer(Process p, int answer) {
         p.getMemoryAnswer(answer);
     }

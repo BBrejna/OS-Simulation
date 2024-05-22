@@ -3,12 +3,13 @@ package computer;
 import algorithms.ramAlgorithms.RamAlgorithm;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class RamScheduler {
     public final RamAlgorithm algorithm;
     public final FrameAllocator frameAllocator;
-    protected Map<Process, ArrayList<Integer>> processFrameMap;
+    public Map<Process, ArrayList<Integer>> processFrameMap = new HashMap<>();
     ArrayList<Integer> freeFrames;
     public final int SIZE;
 
@@ -40,6 +41,7 @@ public class RamScheduler {
         if (p != null) {
             freeFrames.addAll(processFrameMap.get(p));
             processFrameMap.remove(p);
+            algorithm.clearProcess(p);
         }
     }
 

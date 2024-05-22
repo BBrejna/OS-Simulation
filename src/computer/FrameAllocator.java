@@ -26,14 +26,14 @@ public class FrameAllocator {
     }
 
     public void doStep() {
-        ArrayList<Process> prev = processList;
-        fetchProcessList();
-        if (processList.size() != previousProcessCount || processList.equals(prev)) {
-            needsRecalculation = true;
-        }
-        if (needsRecalculation) {
-            allocate();
-        }
+//        ArrayList<Process> prev = processList;
+//        fetchProcessList();
+//        if (processList.size() != previousProcessCount || processList.equals(prev)) {
+//            needsRecalculation = true;
+//        }
+//        if (needsRecalculation) {
+//            allocate();
+//        }
     }
 
 

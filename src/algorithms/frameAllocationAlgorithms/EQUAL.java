@@ -1,5 +1,6 @@
 package algorithms.frameAllocationAlgorithms;
 
+import computer.COMPUTER;
 import computer.Process;
 
 import java.util.ArrayList;
@@ -8,12 +9,14 @@ import java.util.Map;
 
 public class EQUAL extends FrameAllocationAlgorithm {
 
-    public EQUAL(int totalFrames, ArrayList<Process> processesList) {
-        super(totalFrames, processesList);
+    public EQUAL(int totalFrames) {
+        super(totalFrames);
     }
 
     @Override
     public void allocateFrames() {
+        ArrayList<Process> processesList = COMPUTER.activeList;
+
         Map<Process, Integer> allocationMap = new HashMap<>();
         int processesNum = processesList.size();
         if (processesNum == 0) return ;
