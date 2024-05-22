@@ -31,13 +31,13 @@ public abstract class RamAlgorithm {
         normalRun(curTask);
     };
 
-    public boolean checkPage(RamTask t) {
+    public int checkPage(RamTask t) {
         for (Integer frame : frames) {
             if (COMPUTER.frames.get(frame) == t) {
-                return true;
+                return frame;
             }
         }
-        return false;
+        return -1;
     }
     public int checkUsed(Process p) {
         int used=0;

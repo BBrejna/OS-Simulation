@@ -13,7 +13,7 @@ public class FIFO extends RamAlgorithm {
     public void normalRun(RamTask curTask) {
         if (!fifoDelQueue.containsKey(curTask.p)) fifoDelQueue.put(curTask.p, new LinkedList<>());
 
-        if (checkPage(curTask)) return;
+        if (checkPage(curTask) != -1) return;
         if (checkUsed(curTask.p) < checkSize(curTask.p)) {
             int frameNumber = setFreeFrame(curTask);
             resultCounter++;
