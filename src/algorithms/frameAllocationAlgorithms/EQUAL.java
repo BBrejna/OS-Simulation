@@ -1,4 +1,4 @@
-package algorithms.frameAllocation;
+package algorithms.frameAllocationAlgorithms;
 
 import computer.Process;
 
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EQUAL extends FrameAllocation {
+public class EQUAL extends FrameAllocationAlgorithm {
 
     public EQUAL(int totalFrames, ArrayList<Process> processesList) {
         super(totalFrames, processesList);
