@@ -3,9 +3,7 @@ package computer;
 import tools.Pair;
 import tools.Tripple;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Process {
 
@@ -18,6 +16,8 @@ public class Process {
     //frame allocation
     int pageCount;
 
+    int uniquePage;
+
 
     private List<Integer> pageReferences;
 
@@ -28,18 +28,23 @@ public class Process {
         Random random = new Random();
 
         pageCount = 1+random.nextInt(100);
-
+        Set<Integer> uniquePagesSet = new HashSet<>();
         for (int i = 0; i < cpuTime-1; i++) {
             if (random.nextInt(10) < 5) { // todo < 3
                 if (random.nextInt(3) < 1) { //todo < 2
                     // RAM request
-                    ramRequests.add(new Pair(i,random.nextInt(pageCount)));
+                    int rndPage = random.nextInt(pageCount);
+                    ramRequests.add(new Pair(i,rndPage));
+                    //teoretycznie trzeba podliczyc unique pagey
+                    uniquePagesSet.add(rndPage);
+
                 } else {
                     // MEM request
                     memoryRequests.add(new Tripple(i, random.nextInt(SIZE+1), random.nextInt(10)<8 ? -1 : i+random.nextInt(SIZE/2)));
                 }
             }
         }
+        uniquePage = uniquePagesSet.size();
     }
 
 //    public Process(int id, int cpuTime) {
@@ -53,6 +58,9 @@ public class Process {
         this.remainingTime = cpuTime;
         this.arrivalTime = arrivalTime;
         this.finishTime = (cpuTime == 0 ? arrivalTime : -1);
+
+
+        uniquePage =0;
 
         generateRequests(SIZE);
     }
@@ -109,7 +117,16 @@ public class Process {
         return getTurnAroundTime() - cpuTime;
     }
 
-    //frame allocation
+    //ame allocation
+
+
+    public int getUniquePage() {
+        return uniquePage;
+    }
+
+    public void setUniquePage(int uniquePage) {
+        this.uniquePage = uniquePage;
+    }
 
     public List<Integer> getPageReferences() {
         return pageReferences;

@@ -28,7 +28,10 @@ public class Main {
                         CpuScheduler cpuSch = new CpuScheduler(cpuAlgo);
                         MemScheduler memSch = new MemScheduler(memAlgo);
                         FrameAllocator frameAllocator = new FrameAllocator(frameAlgo);
+
                         RamScheduler ramSch = new RamScheduler(ramAlgo, frameAllocator, ramSize);
+                        frameAllocator.processFrameMap = ramSch.processFrameMap;
+
                         COMPUTER computer = new COMPUTER(pp, cpuSch, memSch, ramSch);
 //                System.out.println("pre-work");
                         computer.doWork();

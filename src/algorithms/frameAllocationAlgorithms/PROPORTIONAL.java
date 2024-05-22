@@ -6,9 +6,8 @@ import computer.Process;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class EQUAL extends FrameAllocationAlgorithm {
-
-    public EQUAL(int totalFrames) {
+public class PROPORTIONAL extends FrameAllocationAlgorithm {
+    public PROPORTIONAL(int totalFrames) {
         super(totalFrames);
     }
 
@@ -16,15 +15,16 @@ public class EQUAL extends FrameAllocationAlgorithm {
     public void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap) {
         ArrayList<Process> processesList = COMPUTER.activeList;
 
-        int processesNum = processesList.size();
-        if (processesNum == 0) return;
+        int totalUniquePages = 0;
 
-        int frameToAllocate = totalFrames / processesNum;
+        for (Process process : processesList) {
+            totalUniquePages += process.getUniquePage();
+        }
         int frameCounter = 1;
-
         for (Process p : processesList) {
             ArrayList<Integer> frames = new ArrayList<>();
-            for (int i = 0; i < frameToAllocate; i++) {
+            int framesToAllocate = (int) Math.floor(totalFrames * p.getUniquePage() / totalUniquePages);
+            for (int i = 0; i < framesToAllocate; i++) {
                 frames.add(frameCounter);
                 frameCounter++;
             }

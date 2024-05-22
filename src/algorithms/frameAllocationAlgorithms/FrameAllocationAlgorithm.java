@@ -1,6 +1,7 @@
 package algorithms.frameAllocationAlgorithms;
 
 import java.util.*;
+
 import computer.Process;
 
 public abstract class FrameAllocationAlgorithm {
@@ -10,6 +11,6 @@ public abstract class FrameAllocationAlgorithm {
         this.totalFrames = totalFrames;
     }
 
-    public abstract void allocateFrames();
+    public abstract void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap);
 
 }
