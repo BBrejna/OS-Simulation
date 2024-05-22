@@ -3,6 +3,7 @@ package computer;
 import tools.Tripple;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Process {
@@ -13,6 +14,10 @@ public class Process {
     private int remainingTime;
     public int finishTime;
     int state = 0;
+    //frame allocation
+
+
+    private List<Integer> pageReferences;
 
     ArrayList<Tripple<Integer,Integer,Integer>> memoryRequests = new ArrayList<>();
 //    ArrayList<Pair<Integer,Integer>> ramRequests = new ArrayList<>();
@@ -92,6 +97,16 @@ public class Process {
     public int getWaitTime() {
         if (!isDone()) return -1;
         return getTurnAroundTime() - cpuTime;
+    }
+
+    //frame allocation
+
+    public List<Integer> getPageReferences() {
+        return pageReferences;
+    }
+
+    public void addPageReference(int page) {
+        pageReferences.add(page);
     }
 
     @Override

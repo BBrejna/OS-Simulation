@@ -1,5 +1,6 @@
 package computer;
 
+import algorithms.frameAllocation.FrameAllocation;
 import algorithms.memAlgorithms.MemAlgorithm;
 import statistics.InstanceInfo;
 import statistics.StatisticsHandler;
@@ -12,15 +13,23 @@ public class COMPUTER {
     private final CpuScheduler cpuSch;
     private static MemScheduler memSch;
 
+    //frame allocation
+    private static FrameAllocator frmSch;
+
     public static int curTime=0;
     public static ArrayList<Process> activeList = new ArrayList<>();
     public static ArrayList<Process> finishedList = new ArrayList<>();
     public static ArrayList<Integer> memory = new ArrayList<>();
 
+    //frame allocation
+    public static ArrayList<Integer> frame = new ArrayList<>();
+
     public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch) {
         COMPUTER.provider = provider;
         this.cpuSch = cpuSch;
         COMPUTER.memSch = memSch;
+
+
 
         int SIZE = memSch.SIZE;
         Random random = new Random();
@@ -33,6 +42,7 @@ public class COMPUTER {
         provider.doStep();
         cpuSch.doStep();
         memSch.doStep();
+        frmSch.doStep();
     }
 
     public void doWork() {
