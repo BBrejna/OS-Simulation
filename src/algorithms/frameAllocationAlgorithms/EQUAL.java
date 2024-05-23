@@ -2,6 +2,7 @@ package algorithms.frameAllocationAlgorithms;
 
 import computer.COMPUTER;
 import computer.Process;
+import tools.Tripple;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,7 +14,7 @@ public class EQUAL extends FrameAllocationAlgorithm {
     }
 
     @Override
-    public void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap) {
+    public void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap, Tripple<Process, Integer, Integer> tempTriple) {
         ArrayList<Process> processesList = COMPUTER.activeList;
 
         int processesNum = processesList.size();
@@ -28,6 +29,7 @@ public class EQUAL extends FrameAllocationAlgorithm {
                 frames.add(frameCounter);
                 frameCounter++;
             }
+            processFrameMap.remove(p);
             processFrameMap.put(p, frames);
         }
     }

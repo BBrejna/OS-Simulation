@@ -1,10 +1,12 @@
 package computer;
 
 import algorithms.frameAllocationAlgorithms.FrameAllocationAlgorithm;
+import tools.Tripple;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.CheckedOutputStream;
 
 public class FrameAllocator {
     public final FrameAllocationAlgorithm algorithm;
@@ -12,6 +14,8 @@ public class FrameAllocator {
     private int previousProcessCount;
     private boolean needsRecalculation;
     public Map<Process, ArrayList<Integer>> processFrameMap = new HashMap<>();
+    Tripple<Process,Integer,Integer> tempTriple;
+
 
     public FrameAllocator(FrameAllocationAlgorithm algorithm) {
         this.algorithm = algorithm;
@@ -22,10 +26,11 @@ public class FrameAllocator {
     public void allocate() {
         fetchProcessList();
         if (needsRecalculation) {
-            algorithm.allocateFrames(processFrameMap);
+            algorithm.allocateFrames(processFrameMap,tempTriple);
             needsRecalculation = false;
             previousProcessCount = processList.size();
         }
+
     }
 
     public void doStep() {
@@ -48,6 +53,10 @@ public class FrameAllocator {
 
 
     public void registerAnsweredRequest(Process p, int pageNumber, int curTime) {
-        return;
+        tempTriple.first = p;
+        tempTriple.second = pageNumber;
+        tempTriple.third = curTime;
+        return ;
     }
+
 }
