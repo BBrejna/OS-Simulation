@@ -28,21 +28,27 @@ public abstract class RamAlgorithm {
 
         nextTask = null;
         COMPUTER.ramSch.getFrameAllocator().registerAnsweredRequest(curTask.p, curTask.pageNumber, COMPUTER.curTime);
-        normalRun(curTask);
+        try {
+            normalRun(curTask);
+        } catch (Exception e) {
+            System.out.println(curTask.p.getId()+" "+frames+" "+checkPage(curTask)+" "+checkUsed()+" "+checkSize(curTask.p));
+            throw e;
+        }
+        COMPUTER.ramAnswer(curTask.p, curTask.pageNumber);
     };
 
     public int checkPage(RamTask t) {
         for (Integer frame : frames) {
-            if (COMPUTER.frames.get(frame) == t) {
+            if (COMPUTER.frames.get(frame) == t.pageNumber) {
                 return frame;
             }
         }
         return -1;
     }
-    public int checkUsed(Process p) {
+    public int checkUsed() {
         int used=0;
         for (Integer frame : frames) {
-            if (COMPUTER.frames.get(frame).p == p) {
+            if (COMPUTER.frames.get(frame) != -1) {
                 used++;
             }
         }
@@ -52,14 +58,18 @@ public abstract class RamAlgorithm {
         return COMPUTER.ramSch.processFrameMap.get(p).size();
     }
 
-    public int setFreeFrame(RamTask t) {
+    public int setFreeFrame(int pageNumber) {
         for (Integer frame : frames) {
-            if (COMPUTER.frames.get(frame).p != t.p) {
-                COMPUTER.frames.set(frame, t);
+            if (COMPUTER.frames.get(frame) == -1) {
+                COMPUTER.frames.set(frame, pageNumber);
                 return frame;
             }
         }
         return -1;
+    }
+
+    public int getPageErrorsNumber() {
+        return resultCounter;
     }
 
     public abstract void normalRun(RamTask curTask);

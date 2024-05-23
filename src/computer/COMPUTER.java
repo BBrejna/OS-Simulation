@@ -21,7 +21,7 @@ public class COMPUTER {
     public static ArrayList<Integer> memory = new ArrayList<>();
 
     //frame allocation
-    public static ArrayList<RamTask> frames = new ArrayList<>();
+    public static ArrayList<Integer> frames = new ArrayList<>();
 
     public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch, RamScheduler ramSch) {
         COMPUTER.provider = provider;
@@ -39,7 +39,7 @@ public class COMPUTER {
 
         SIZE = ramSch.SIZE;
         for (int i = 0; i <= SIZE; i++) {
-            frames.add(new RamTask(null,-1));
+            frames.add(-1);
         }
     }
 
@@ -67,6 +67,9 @@ public class COMPUTER {
     public static void memAnswer(Process p, int answer) {
         p.getMemoryAnswer(answer);
     }
+    public static void ramAnswer(Process p, int answer) {
+        p.getRamAnswer(answer);
+    }
 
     public static void registerProcess(Process p) {
         activeList.add(p);
@@ -87,8 +90,11 @@ public class COMPUTER {
         String memAlgoName = memSch.algorithm.getClass().getSimpleName();
         if (memSch.algorithm.MODE == 1) memAlgoName += " + edf";
         else if (memSch.algorithm.MODE == 2) memAlgoName += " + fd-scan";
+        String ramAlgoName = ramSch.algorithm.getClass().getSimpleName();
+        String frameAllocatorName = ramSch.frameAllocator.algorithm.getClass().getSimpleName();
         int memStepsDone = COMPUTER.memSch.algorithm.getSteps();
         int memRejected = COMPUTER.memSch.algorithm.getRejected();
+        int ramPageErrors = COMPUTER.ramSch.algorithm.getPageErrorsNumber();
 
 
 //        System.out.println("-------------------------------------------");
@@ -117,6 +123,6 @@ public class COMPUTER {
 //        System.out.println("HDD steps done: " + COMPUTER.memSch.algorithm.getSteps());
 //        System.out.println("HDD rejected priority: " + COMPUTER.memSch.algorithm.getRejected());
 
-        StatisticsHandler.registerInstance(new InstanceInfo(processes.size(), COMPUTER.curTime, cpuAlgoName, memAlgoName, avg_turnaround, avg_wait, memStepsDone, memRejected));
+        StatisticsHandler.registerInstance(new InstanceInfo(processes.size(), COMPUTER.curTime, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
     }
 }

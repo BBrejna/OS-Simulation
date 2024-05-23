@@ -9,15 +9,15 @@ public class RAND extends RamAlgorithm {
     @Override
     public void normalRun(RamTask curTask) {
         if (checkPage(curTask) != -1) return;
-        if (checkUsed(curTask.p) < checkSize(curTask.p)) {
-            setFreeFrame(curTask);
+        if (checkUsed() < checkSize(curTask.p)) {
+            setFreeFrame(curTask.pageNumber);
             resultCounter++;
             return;
         }
 
         Random random = new Random();
         int id = random.nextInt(frames.size());
-        COMPUTER.frames.set(frames.get(id), curTask);
+        COMPUTER.frames.set(frames.get(id), curTask.pageNumber);
         resultCounter++;
     }
 

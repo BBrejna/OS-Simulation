@@ -3,6 +3,7 @@ package computer;
 import algorithms.frameAllocationAlgorithms.FrameAllocationAlgorithm;
 import tools.Tripple;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class FrameAllocator {
     private boolean needsRecalculation;
     public Map<Process, ArrayList<Integer>> processFrameMap = new HashMap<>();
     Tripple<Process,Integer,Integer> tempTriple;
+    ArrayList<Process> prev;
 
 
     public FrameAllocator(FrameAllocationAlgorithm algorithm) {
@@ -22,6 +24,7 @@ public class FrameAllocator {
         fetchProcessList();
         this.previousProcessCount =processList.size();
         this.needsRecalculation =true;
+        this.prev = new ArrayList<>();
     }
     public void allocate() {
         if (needsRecalculation) {
@@ -33,7 +36,6 @@ public class FrameAllocator {
     }
 
     public void doStep() {
-        ArrayList<Process> prev = processList;
         fetchProcessList();
         if (!processList.equals(prev)) {
             needsRecalculation = true;
@@ -41,6 +43,7 @@ public class FrameAllocator {
         if (needsRecalculation) {
             allocate();
         }
+        prev = new ArrayList<>(processList);
     }
 
 

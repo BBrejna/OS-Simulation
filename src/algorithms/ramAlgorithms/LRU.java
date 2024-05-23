@@ -10,26 +10,27 @@ public class LRU extends RamAlgorithm {
 
     @Override
     public void normalRun(RamTask curTask) {
-        if (!lruFramesOrder.containsKey(curTask.p)) lruFramesOrder.put(curTask.p, new ArrayList<>());
 
         int possibleFrame = checkPage(curTask);
         if (possibleFrame != -1) {
-            lruFramesOrder.get(curTask.p).remove(possibleFrame);
+            lruFramesOrder.get(curTask.p).remove((Integer)possibleFrame);
             lruFramesOrder.get(curTask.p).add(possibleFrame);
             return;
         }
-        if (checkUsed(curTask.p) < checkSize(curTask.p)) {
-            int frameNumber = setFreeFrame(curTask);
+        if (checkUsed() < checkSize(curTask.p)) {
+            int frameNumber = setFreeFrame(curTask.pageNumber);
             resultCounter++;
             lruFramesOrder.get(curTask.p).add(frameNumber);
             return;
         }
 
+        System.out.println(lruFramesOrder.get(curTask.p));
+
         int toDel = lruFramesOrder.get(curTask.p).get(0);
         lruFramesOrder.get(curTask.p).remove(0);
         lruFramesOrder.get(curTask.p).add(toDel);
 
-        COMPUTER.frames.set(toDel, curTask);
+        COMPUTER.frames.set(toDel, curTask.pageNumber);
         resultCounter++;
 
     }
@@ -41,7 +42,8 @@ public class LRU extends RamAlgorithm {
 
     @Override
     public void resetAlgorithm() {
-        for (Process p : lruFramesOrder.keySet()) {
+        for (Process p : COMPUTER.activeList) {
+            if (!lruFramesOrder.containsKey(p)) lruFramesOrder.put(p, new ArrayList<>());
 
             ArrayList<Integer> toDel = new ArrayList<>();
             for (Integer frame : lruFramesOrder.get(p)) {
@@ -52,6 +54,12 @@ public class LRU extends RamAlgorithm {
 
             for (Integer i : toDel) {
                 lruFramesOrder.get(p).remove((Object) i);
+            }
+
+            for (Integer frame : COMPUTER.ramSch.processFrameMap.get(p)) {
+                if (!lruFramesOrder.get(p).contains(frame) && COMPUTER.frames.get(frame) != -1){
+                    lruFramesOrder.get(p).add(0,frame);
+                }
             }
 
 

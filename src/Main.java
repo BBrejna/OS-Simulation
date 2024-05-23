@@ -8,7 +8,7 @@ import algorithms.frameAllocationAlgorithms.*;
 
 public class Main {
     public static int memSize = 50;
-    public static int ramSize = 5;
+    public static int ramSize = 10;
 
     public static void main(String[] args) {
         ProcessProvider pp = new ProcessProvider(10, memSize);

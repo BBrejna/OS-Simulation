@@ -27,8 +27,8 @@ public class Process {
 
         pageCount = 1+random.nextInt(100);
         for (int i = 0; i < cpuTime-1; i++) {
-            if (random.nextInt(10) < 5) { // todo < 3
-                if (random.nextInt(3) < 1) { //todo < 2
+            if (random.nextInt(10) < 3) {
+                if (random.nextInt(3) < 2) {
                     // RAM request
                     int rndPage = random.nextInt(pageCount);
                     ramRequests.add(new Pair(i,rndPage));
@@ -58,6 +58,10 @@ public class Process {
     }
 
     public void getMemoryAnswer(Integer answer) {
+//        System.out.println("Process "+id+" received "+answer+" from HDD");
+        state = 0;
+    }
+    public void getRamAnswer(Integer answer) {
 //        System.out.println("Process "+id+" received "+answer+" from HDD");
         state = 0;
     }

@@ -11,25 +11,28 @@ public class FIFO extends RamAlgorithm {
 
     @Override
     public void normalRun(RamTask curTask) {
-        if (!fifoDelQueue.containsKey(curTask.p)) fifoDelQueue.put(curTask.p, new LinkedList<>());
+        System.out.println("NORMAL"+" "+ curTask.p.getId()+ " "+ curTask.pageNumber);
 
         if (checkPage(curTask) != -1) return;
-        if (checkUsed(curTask.p) < checkSize(curTask.p)) {
-            int frameNumber = setFreeFrame(curTask);
+        if (checkUsed() < checkSize(curTask.p)) {
+            int frameNumber = setFreeFrame(curTask.pageNumber);
             resultCounter++;
             fifoDelQueue.get(curTask.p).add(frameNumber);
             return;
         }
+        System.out.println(fifoDelQueue.get(curTask.p));
 
         int toDel = fifoDelQueue.get(curTask.p).poll();
         fifoDelQueue.get(curTask.p).add(toDel);
-        COMPUTER.frames.set(toDel, curTask);
+        COMPUTER.frames.set(toDel, curTask.pageNumber);
         resultCounter++;
     }
 
     @Override
     public void resetAlgorithm() {
-        for (Process p : fifoDelQueue.keySet()) {
+
+        for (Process p : COMPUTER.activeList) {
+            if (!fifoDelQueue.containsKey(p)) fifoDelQueue.put(p, new LinkedList<>());
 
             ArrayList<Integer> toDel = new ArrayList<>();
             for (Integer frame : fifoDelQueue.get(p)) {
@@ -40,6 +43,12 @@ public class FIFO extends RamAlgorithm {
 
             for (Integer i : toDel) {
                 fifoDelQueue.get(p).remove((Object) i);
+            }
+
+            for (Integer frame : COMPUTER.ramSch.processFrameMap.get(p)) {
+                if (!fifoDelQueue.get(p).contains(frame) && COMPUTER.frames.get(frame) != -1){
+                    fifoDelQueue.get(p).add(frame);
+                }
             }
 
 

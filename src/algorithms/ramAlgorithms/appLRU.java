@@ -1,4 +1,4 @@
 package algorithms.ramAlgorithms;
 
-public class SECONDCHANCE {
+public class appLRU {
 }

@@ -5,6 +5,7 @@ import computer.Process;
 import tools.Tripple;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EQUAL extends FrameAllocationAlgorithm {
@@ -16,6 +17,7 @@ public class EQUAL extends FrameAllocationAlgorithm {
     @Override
     public void allocateFrames(Tripple<Process, Integer, Integer> tempTriple) {
         ArrayList<Process> processesList = COMPUTER.activeList;
+        COMPUTER.ramSch.processFrameMap.clear();
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
 
         int processesNum = processesList.size();
