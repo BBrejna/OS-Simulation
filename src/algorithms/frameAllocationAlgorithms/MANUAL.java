@@ -1,5 +1,6 @@
 package algorithms.frameAllocationAlgorithms;
 
+import computer.COMPUTER;
 import computer.Process;
 import tools.Tripple;
 
@@ -12,9 +13,12 @@ public class MANUAL extends FrameAllocationAlgorithm {
     }
     int window =5;
     @Override
-    public void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap, Tripple<Process, Integer, Integer> tempTriple) {
+    public void allocateFrames(Tripple<Process, Integer, Integer> tempTriple) {
+
+        COMPUTER.ramSch.algorithm.resetAlgorithm();
 
     }
 
 }
+
 

@@ -24,9 +24,8 @@ public class FrameAllocator {
         this.needsRecalculation =true;
     }
     public void allocate() {
-        fetchProcessList();
         if (needsRecalculation) {
-            algorithm.allocateFrames(processFrameMap,tempTriple);
+            algorithm.allocateFrames(tempTriple);
             needsRecalculation = false;
             previousProcessCount = processList.size();
         }
@@ -34,14 +33,14 @@ public class FrameAllocator {
     }
 
     public void doStep() {
-//        ArrayList<Process> prev = processList;
-//        fetchProcessList();
-//        if (processList.size() != previousProcessCount || processList.equals(prev)) {
-//            needsRecalculation = true;
-//        }
-//        if (needsRecalculation) {
-//            allocate();
-//        }
+        ArrayList<Process> prev = processList;
+        fetchProcessList();
+        if (!processList.equals(prev)) {
+            needsRecalculation = true;
+        }
+        if (needsRecalculation) {
+            allocate();
+        }
     }
 
 
@@ -53,10 +52,10 @@ public class FrameAllocator {
 
 
     public void registerAnsweredRequest(Process p, int pageNumber, int curTime) {
-        tempTriple.first = p;
-        tempTriple.second = pageNumber;
-        tempTriple.third = curTime;
+        tempTriple = new Tripple<>(p,pageNumber,curTime);
         return ;
     }
 
 }
+//czy tickanie ramu jest stale dla jednego proceus, czyli wchodzi proces dla
+// niego caly ram sie wytickuje i wtedy dopiero koleejny moze wlciec?

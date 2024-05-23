@@ -12,6 +12,6 @@ public abstract class FrameAllocationAlgorithm {
         this.totalFrames = totalFrames;
     }
 
-    public abstract void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap, Tripple<Process, Integer, Integer> tempTriple);
+    public abstract void allocateFrames(Tripple<Process, Integer, Integer> tempTriple);
 
 }

@@ -14,7 +14,9 @@ public class ZONAL extends FrameAllocationAlgorithm{
     }
 
     @Override
-    public void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap, Tripple<Process, Integer, Integer> tempTriple) {
+    public void allocateFrames(Tripple<Process, Integer, Integer> tempTriple) {
+
+        COMPUTER.ramSch.algorithm.resetAlgorithm();
 
     }
 }

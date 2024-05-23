@@ -28,15 +28,13 @@ public class Process {
         Random random = new Random();
 
         pageCount = 1+random.nextInt(100);
-        Set<Integer> uniquePagesSet = new HashSet<>();
         for (int i = 0; i < cpuTime-1; i++) {
             if (random.nextInt(10) < 5) { // todo < 3
                 if (random.nextInt(3) < 1) { //todo < 2
                     // RAM request
                     int rndPage = random.nextInt(pageCount);
                     ramRequests.add(new Pair(i,rndPage));
-                    //teoretycznie trzeba podliczyc unique pagey
-                    uniquePagesSet.add(rndPage);
+
 
                 } else {
                     // MEM request
@@ -44,7 +42,7 @@ public class Process {
                 }
             }
         }
-        uniquePage = uniquePagesSet.size();
+
     }
 
 //    public Process(int id, int cpuTime) {
@@ -83,7 +81,11 @@ public class Process {
             state = 2;
         }
         remainingTime--;
-        if (remainingTime == 0) finishTime = COMPUTER.curTime;
+        if (remainingTime == 0) {
+            finishTime = COMPUTER.curTime;
+            COMPUTER.ramSch.clearProcessFrames(this);
+        }
+
     }
 
     public boolean isDone() {
@@ -117,16 +119,14 @@ public class Process {
         return getTurnAroundTime() - cpuTime;
     }
 
+
     //ame allocation
 
 
-    public int getUniquePage() {
-        return uniquePage;
+    public int getPageCount() {
+        return pageCount;
     }
 
-    public void setUniquePage(int uniquePage) {
-        this.uniquePage = uniquePage;
-    }
 
     public List<Integer> getPageReferences() {
         return pageReferences;

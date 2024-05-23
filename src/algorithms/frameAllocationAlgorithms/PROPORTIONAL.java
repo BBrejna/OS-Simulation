@@ -13,18 +13,18 @@ public class PROPORTIONAL extends FrameAllocationAlgorithm {
     }
 
     @Override
-    public void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap, Tripple<Process, Integer, Integer> tempTriple) {
+    public void allocateFrames( Tripple<Process, Integer, Integer> tempTriple) {
         ArrayList<Process> processesList = COMPUTER.activeList;
-
-        int totalUniquePages = 0;
+        Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
+        int pages = 0;
 
         for (Process process : processesList) {
-            totalUniquePages += process.getUniquePage();
+            pages += process.getPageCount();
         }
-        int frameCounter = 1;
+        int frameCounter =0 ;
         for (Process p : processesList) {
             ArrayList<Integer> frames = new ArrayList<>();
-            int framesToAllocate = (int) Math.floor(totalFrames * p.getUniquePage() / totalUniquePages);
+            int framesToAllocate = (totalFrames * p.getPageCount() / pages);
             for (int i = 0; i < framesToAllocate; i++) {
                 frames.add(frameCounter);
                 frameCounter++;
@@ -32,5 +32,6 @@ public class PROPORTIONAL extends FrameAllocationAlgorithm {
             processFrameMap.remove(p);
             processFrameMap.put(p, frames);
         }
+        COMPUTER.ramSch.algorithm.resetAlgorithm();
     }
 }

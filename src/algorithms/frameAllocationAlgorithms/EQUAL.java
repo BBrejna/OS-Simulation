@@ -14,14 +14,15 @@ public class EQUAL extends FrameAllocationAlgorithm {
     }
 
     @Override
-    public void allocateFrames(Map<Process, ArrayList<Integer>> processFrameMap, Tripple<Process, Integer, Integer> tempTriple) {
+    public void allocateFrames(Tripple<Process, Integer, Integer> tempTriple) {
         ArrayList<Process> processesList = COMPUTER.activeList;
+        Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
 
         int processesNum = processesList.size();
         if (processesNum == 0) return;
 
         int frameToAllocate = totalFrames / processesNum;
-        int frameCounter = 1;
+        int frameCounter = 0;
 
         for (Process p : processesList) {
             ArrayList<Integer> frames = new ArrayList<>();
@@ -32,5 +33,6 @@ public class EQUAL extends FrameAllocationAlgorithm {
             processFrameMap.remove(p);
             processFrameMap.put(p, frames);
         }
+        COMPUTER.ramSch.algorithm.resetAlgorithm();
     }
 }

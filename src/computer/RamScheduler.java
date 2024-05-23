@@ -23,7 +23,7 @@ public class RamScheduler {
     public void getRamRequest(Process p,int page){
         algorithm.registerTask(p,page);
     }
-
+/*
     public void assignFrame(Process p, int frame) {
         if (p != null && 0 <= frame && frame <= SIZE) {
             if (!processFrameMap.containsKey(p)) processFrameMap.put(p,new ArrayList<>());
@@ -36,11 +36,9 @@ public class RamScheduler {
             processFrameMap.get(p).remove(frame);
             freeFrames.add(frame);
         }
-    }
+    }*/
     public void clearProcessFrames(Process p) {
         if (p != null) {
-            freeFrames.addAll(processFrameMap.get(p));
-            processFrameMap.remove(p);
             algorithm.clearProcess(p);
         }
     }
