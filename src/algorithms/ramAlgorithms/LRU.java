@@ -24,8 +24,6 @@ public class LRU extends RamAlgorithm {
             return;
         }
 
-        System.out.println(lruFramesOrder.get(curTask.p));
-
         int toDel = lruFramesOrder.get(curTask.p).get(0);
         lruFramesOrder.get(curTask.p).remove(0);
         lruFramesOrder.get(curTask.p).add(toDel);

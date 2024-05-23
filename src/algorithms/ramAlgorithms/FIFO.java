@@ -11,7 +11,6 @@ public class FIFO extends RamAlgorithm {
 
     @Override
     public void normalRun(RamTask curTask) {
-        System.out.println("NORMAL"+" "+ curTask.p.getId()+ " "+ curTask.pageNumber);
 
         if (checkPage(curTask) != -1) return;
         if (checkUsed() < checkSize(curTask.p)) {
@@ -20,7 +19,6 @@ public class FIFO extends RamAlgorithm {
             fifoDelQueue.get(curTask.p).add(frameNumber);
             return;
         }
-        System.out.println(fifoDelQueue.get(curTask.p));
 
         int toDel = fifoDelQueue.get(curTask.p).poll();
         fifoDelQueue.get(curTask.p).add(toDel);
