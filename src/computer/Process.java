@@ -16,8 +16,6 @@ public class Process {
     //frame allocation
     int pageCount;
 
-    int uniquePage;
-
 
     private List<Integer> pageReferences;
 
@@ -56,10 +54,6 @@ public class Process {
         this.remainingTime = cpuTime;
         this.arrivalTime = arrivalTime;
         this.finishTime = (cpuTime == 0 ? arrivalTime : -1);
-
-
-        uniquePage =0;
-
         generateRequests(SIZE);
     }
 
@@ -140,4 +134,13 @@ public class Process {
     public String toString() {
         return id+" "+arrivalTime+" "+cpuTime+" "+finishTime+" "+getTurnAroundTime()+" "+getWaitTime()+" "+state;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Process process = (Process) o;
+        return id == process.id;
+    }
+
 }
