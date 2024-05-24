@@ -25,13 +25,21 @@ public class Process {
     void generateRequests(int SIZE) {
         Random random = new Random();
 
-        pageCount = 1+random.nextInt(100);
+        pageCount = 1+random.nextInt(2,100);
+        int localityFactor = pageCount / 2;
+
         for (int i = 0; i < cpuTime-1; i++) {
             if (random.nextInt(10) < 3) {
+                // ANY REQUEST
                 if (random.nextInt(3) < 2) {
                     // RAM request
-                    int rndPage = random.nextInt(pageCount);
-                    ramRequests.add(new Pair(i,rndPage));
+                    int potentialRequest = random.nextInt(pageCount);
+                    if (!ramRequests.isEmpty()) {
+                        potentialRequest = ramRequests.getLast().second + random.nextInt(localityFactor) - (localityFactor / 2);
+                    }
+                    int request = Math.min(pageCount, Math.max(1,potentialRequest));
+
+                    ramRequests.add(new Pair(i,request));
 
 
                 } else {
