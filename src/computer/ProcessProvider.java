@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class ProcessProvider {
     public static int maxCpuTime = 30;
-    public static int maxDeltaTime = 30;
+    public static int maxDeltaTime = 15;
     public int totalProcessesNumber;
     public int processesGenerated=0;
     public int timeNext=0;

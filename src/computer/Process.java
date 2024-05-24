@@ -36,7 +36,7 @@ public class Process {
 
                 } else {
                     // MEM request
-                    memoryRequests.add(new Tripple(i, random.nextInt(SIZE+1), random.nextInt(10)<8 ? -1 : i+random.nextInt(SIZE/2)));
+                    memoryRequests.add(new Tripple(i, random.nextInt(SIZE+1), random.nextInt(10)<9 ? -1 : i+random.nextInt(SIZE/2)));
                 }
             }
         }
