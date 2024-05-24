@@ -1,5 +1,6 @@
 package computer;
 
+import simulation.SimulationParameters;
 import tools.Pair;
 import tools.Tripple;
 
@@ -25,7 +26,7 @@ public class Process {
     void generateRequests(int SIZE) {
         Random random = new Random();
 
-        pageCount = 1+random.nextInt(2,100);
+        pageCount = 1+random.nextInt(2, SimulationParameters.MAX_PROCESS_PAGE_NUMBER);
         int localityFactor = pageCount / 2;
 
         for (int i = 0; i < cpuTime-1; i++) {
@@ -51,11 +52,6 @@ public class Process {
 
     }
 
-//    public Process(int id, int cpuTime) {
-//        this.arrivalTime = COMPUTER.curTime; // todo -1
-//
-//        generateRequests();
-//    }
     public Process(int id, int cpuTime, int arrivalTime, int SIZE) {
         this.id = id;
         this.cpuTime = cpuTime;

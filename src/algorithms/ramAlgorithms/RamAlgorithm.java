@@ -31,7 +31,7 @@ public abstract class RamAlgorithm {
         try {
             normalRun(curTask);
         } catch (Exception e) {
-            System.out.println(curTask.p.getId()+" "+frames+" "+checkPage(curTask)+" "+checkUsed()+" "+checkSize(curTask.p));
+            System.out.println("ERROR CAUGHT IN RAM ALGORITHM "+curTask.p.getId()+" "+frames+" "+checkPage(curTask)+" "+checkUsed()+" "+checkSize(curTask.p));
             throw e;
         }
         COMPUTER.ramAnswer(curTask.p, curTask.pageNumber);

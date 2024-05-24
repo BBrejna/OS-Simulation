@@ -2,11 +2,11 @@ package algorithms.memAlgorithms;
 
 public class SCAN extends MemAlgorithm {
 
-    public SCAN(int size, int MODE) {
-        super(size, MODE);
+    public SCAN(int MODE) {
+        super(MODE);
     }
-    public SCAN(int size, int MODE, int position) {
-        super(size, MODE, position);
+    public SCAN(int MODE, int position) {
+        super(MODE, position);
     }
 
     public void doNormal(){

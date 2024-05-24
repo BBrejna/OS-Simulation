@@ -2,10 +2,11 @@ package computer;
 
 import java.util.ArrayList;
 import java.util.Random;
+import simulation.SimulationParameters;
 
 public class ProcessProvider {
-    public static int maxCpuTime = 100;
-    public static int maxDeltaTime = 50;
+    public static int maxCpuTime = SimulationParameters.MAX_PROCESS_CPU_TIME;
+    public static int maxDeltaTime = SimulationParameters.MAX_PROCESS_DELTA_TIME;
     public int totalProcessesNumber;
     public int processesGenerated=0;
     public int timeNext=0;

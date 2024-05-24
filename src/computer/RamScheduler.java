@@ -1,6 +1,7 @@
 package computer;
 
 import algorithms.ramAlgorithms.RamAlgorithm;
+import simulation.SimulationParameters;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,13 +11,12 @@ public class RamScheduler {
     public final RamAlgorithm algorithm;
     public final FrameAllocator frameAllocator;
     public Map<Process, ArrayList<Integer>> processFrameMap = new HashMap<>();
-    ArrayList<Integer> freeFrames;
     public final int SIZE;
 
-    public RamScheduler(RamAlgorithm algorithm, FrameAllocator frameAllocator, int SIZE) {
+    public RamScheduler(RamAlgorithm algorithm, FrameAllocator frameAllocator) {
         this.algorithm = algorithm;
         this.frameAllocator = frameAllocator;
-        this.SIZE = SIZE;
+        this.SIZE = SimulationParameters.RAM_SIZE;
     }
 
     // registerTask

@@ -37,7 +37,7 @@ public class PROP extends FrameAllocationAlgorithm {
         int frameCounter =k ;
         for (Process p : processesList) {
             ArrayList<Integer> frames = new ArrayList<>();
-            int framesToAllocate = ((freeFramesToAllocate * p.getPageCount()) / pages);
+            int framesToAllocate = (freeFramesToAllocate * (p.getPageCount() / pages));
            // System.out.println("dr: "+framesToAllocate);
             for (int i = 0; i < framesToAllocate; i++) {
                 //System.out.println("zssd: "+frameCounter);

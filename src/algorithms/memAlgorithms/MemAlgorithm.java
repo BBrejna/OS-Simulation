@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import computer.COMPUTER;
 import computer.Process;
+import simulation.SimulationParameters;
 
 public abstract class MemAlgorithm {
 
@@ -21,11 +22,11 @@ public abstract class MemAlgorithm {
     ArrayList<MemTask> waitingTasks = new ArrayList<MemTask>();
     ArrayList<MemTask> waitingPriorityTasks = new ArrayList<MemTask>();
 
-    public MemAlgorithm(int SIZE, int MODE) {
-        this(SIZE, MODE, 0);
+    public MemAlgorithm(int MODE) {
+        this(MODE, 0);
     }
-    public MemAlgorithm(int SIZE, int MODE, int position) {
-        this.SIZE = SIZE;
+    public MemAlgorithm(int MODE, int position) {
+        this.SIZE = SimulationParameters.MEM_SIZE;
         this.MODE = MODE;
         this.position = position;
 

@@ -4,11 +4,11 @@ import computer.Process;
 
 public class SSTF extends MemAlgorithm {
 
-    public SSTF(int size, int MODE) {
-        super(size, MODE);
+    public SSTF(int MODE) {
+        super(MODE);
     }
-    public SSTF(int size, int MODE, int position) {
-        super(size, MODE, position);
+    public SSTF(int MODE, int position) {
+        super(MODE, position);
     }
 
     @Override

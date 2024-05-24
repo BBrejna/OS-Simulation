@@ -3,11 +3,11 @@ package algorithms.memAlgorithms;
 public class CSCAN extends MemAlgorithm {
     boolean lockedReturn = false;
 
-    public CSCAN(int size, int MODE) {
-        super(size, MODE);
+    public CSCAN(int MODE) {
+        super(MODE);
     }
-    public CSCAN(int size, int MODE, int position) {
-        super(size, MODE, position);
+    public CSCAN(int MODE, int position) {
+        super(MODE, position);
     }
 
     public void doNormal(){
