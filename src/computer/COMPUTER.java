@@ -31,12 +31,14 @@ public class COMPUTER {
 
 
 
+        memory = new ArrayList<>();
         int SIZE = memSch.SIZE;
         Random random = new Random();
         for (int i = 0; i <= SIZE; i++) {
             memory.add(random.nextInt((int)1e9));
         }
 
+        frames = new ArrayList<>();
         SIZE = ramSch.SIZE;
         for (int i = 0; i <= SIZE; i++) {
             frames.add(-1);

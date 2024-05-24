@@ -7,19 +7,19 @@ import algorithms.ramAlgorithms.*;
 import algorithms.frameAllocationAlgorithms.*;
 
 public class Main {
-    public static int memSize = 50;
-    public static int ramSize = 10;
+    public static int memSize = 100;
+    public static int ramSize = 1000;
 
     public static void main(String[] args) {
-        ProcessProvider pp = new ProcessProvider(10, memSize);
+        ProcessProvider pp = new ProcessProvider(1000, memSize);
 
         CpuAlgorithm[] cpuAlgorithms = new CpuAlgorithm[]{new algorithms.cpuAlgorithms.FCFS(), new RR(), new SJF(), new SRTF()};
         MemAlgorithm[] memAlgorithms = new MemAlgorithm[]{
 //                new algorithms.memAlgorithms.FCFS(memSize, 0), new SSTF(memSize, 0), new SCAN(memSize, 0), new CSCAN(memSize, 0),
                 new algorithms.memAlgorithms.FCFS(memSize, 1), new SSTF(memSize, 1), new SCAN(memSize, 1), new CSCAN(memSize, 1),
                 new algorithms.memAlgorithms.FCFS(memSize, 2), new SSTF(memSize, 2), new SCAN(memSize, 2), new CSCAN(memSize, 2)};
-        RamAlgorithm[] ramAlgorithms = new RamAlgorithm[]{new FIFO(), new RAND(), new LRU()};
-        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(ramSize),new MANUAL(ramSize)};
+        RamAlgorithm[] ramAlgorithms = new RamAlgorithm[]{new FIFO(), new RAND(), new LRU(), new AppLRU()};
+        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(ramSize), new PROP(ramSize), new MANUAL(ramSize)};
 
         for (CpuAlgorithm cpuAlgo : cpuAlgorithms) {
             for (MemAlgorithm memAlgo : memAlgorithms) {
