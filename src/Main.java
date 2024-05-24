@@ -19,7 +19,7 @@ public class Main {
                 new algorithms.memAlgorithms.FCFS(memSize, 1), new SSTF(memSize, 1), new SCAN(memSize, 1), new CSCAN(memSize, 1),
                 new algorithms.memAlgorithms.FCFS(memSize, 2), new SSTF(memSize, 2), new SCAN(memSize, 2), new CSCAN(memSize, 2)};
         RamAlgorithm[] ramAlgorithms = new RamAlgorithm[]{new FIFO(), new RAND(), new LRU()};
-        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(ramSize)};
+        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(ramSize),new MANUAL(ramSize)};
 
         for (CpuAlgorithm cpuAlgo : cpuAlgorithms) {
             for (MemAlgorithm memAlgo : memAlgorithms) {

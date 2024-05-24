@@ -1,13 +1,15 @@
 package computer;
 
 import algorithms.frameAllocationAlgorithms.FrameAllocationAlgorithm;
+import algorithms.frameAllocationAlgorithms.PROP;
+import tools.Pair;
 import tools.Tripple;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.zip.CheckedOutputStream;
+import java.util.Set;
 
 public class FrameAllocator {
     public final FrameAllocationAlgorithm algorithm;
@@ -15,21 +17,42 @@ public class FrameAllocator {
     private int previousProcessCount;
     private boolean needsRecalculation;
     public Map<Process, ArrayList<Integer>> processFrameMap = new HashMap<>();
-    Tripple<Process,Integer,Integer> tempTriple;
+    public ArrayList<Pair<Process, Integer>> processesStats = new ArrayList<>();
+    private Map<Process, Integer> processesStatsMap = new HashMap<>();
+    Tripple<Process, Integer, Integer> tempTriple;
     ArrayList<Process> prev;
 
+    private Map<Process, Set<Integer>> pageAccessMap = new HashMap<>();
+    private Map<Process, Integer> pageFaultsMap = new HashMap<>();
+
+    boolean needsTriple = false;
+    int counter;
+    int window = 10;
 
     public FrameAllocator(FrameAllocationAlgorithm algorithm) {
         this.algorithm = algorithm;
         fetchProcessList();
-        this.previousProcessCount =processList.size();
-        this.needsRecalculation =true;
+        this.previousProcessCount = processList.size();
+        this.needsRecalculation = true;
         this.prev = new ArrayList<>();
     }
+
     public void allocate() {
-        if (needsRecalculation) {
-            algorithm.allocateFrames(tempTriple);
-            needsRecalculation = false;
+
+        processesStats.clear();
+        for (Map.Entry<Process, Integer> entry : processesStatsMap.entrySet()) {
+            processesStats.add(new Pair<>(entry.getKey(), entry.getValue()));
+        }
+
+        if (algorithm instanceof algorithms.frameAllocationAlgorithms.MANUAL) {
+            algorithm.allocateFrames(processesStats, needsTriple);
+            processesStats.clear();
+            needsTriple = false;
+            previousProcessCount = processList.size();
+        } else if (algorithm instanceof algorithms.frameAllocationAlgorithms.EQUAL
+                || algorithm instanceof PROP) {
+            algorithm.allocateFrames(processesStats, needsTriple);
+            processesStats.clear();
             previousProcessCount = processList.size();
         }
 
@@ -46,19 +69,43 @@ public class FrameAllocator {
         prev = new ArrayList<>(processList);
     }
 
-
-
     private void fetchProcessList() {
         processList = COMPUTER.activeList;
-        //finishedList = COMPUTER.finishedList;
     }
-
 
     public void registerAnsweredRequest(Process p, int pageNumber, int curTime) {
-        tempTriple = new Tripple<>(p,pageNumber,curTime);
-        return ;
-    }
+        if(algorithm instanceof algorithms.frameAllocationAlgorithms.MANUAL) {
+            //System.out.println("ID: " + p.getId());
+            counter++;
+            tempTriple = new Tripple<>(p, pageNumber, curTime);
 
+            if (!pageAccessMap.containsKey(p)) {
+                pageAccessMap.put(p, new HashSet<>());
+            }
+
+            Set<Integer> accessedPages = pageAccessMap.get(p);
+            if (!accessedPages.contains(pageNumber)) {
+                accessedPages.add(pageNumber);
+                pageFaultsMap.put(p, pageFaultsMap.getOrDefault(p, 0) + 1);
+            }
+
+            processesStatsMap.put(p, pageFaultsMap.get(p));
+
+            if (counter == window) {
+                needsTriple = true;
+                counter = 0;
+            }
+            if (needsTriple) {
+                //  System.out.println(processesStatsMap.size() + "+XDD");
+                allocate();
+            }
+        }
+        if(algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL){
+
+
+        }
+
+
+
+    }
 }
-//czy tickanie ramu jest stale dla jednego proceus, czyli wchodzi proces dla
-// niego caly ram sie wytickuje i wtedy dopiero koleejny moze wlciec?

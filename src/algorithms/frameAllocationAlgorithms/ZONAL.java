@@ -2,6 +2,7 @@ package algorithms.frameAllocationAlgorithms;
 
 import computer.COMPUTER;
 import computer.Process;
+import tools.Pair;
 import tools.Tripple;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class ZONAL extends FrameAllocationAlgorithm{
     }
 
     @Override
-    public void allocateFrames(Tripple<Process, Integer, Integer> tempTriple) {
+    public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple) {
 
         COMPUTER.ramSch.algorithm.resetAlgorithm();
 
