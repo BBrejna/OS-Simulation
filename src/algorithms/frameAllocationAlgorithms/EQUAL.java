@@ -2,6 +2,7 @@ package algorithms.frameAllocationAlgorithms;
 
 import computer.COMPUTER;
 import computer.Process;
+import simulation.SimulationParameters;
 import tools.Pair;
 import tools.Tripple;
 
@@ -11,17 +12,12 @@ import java.util.Map;
 
 public class EQUAL extends FrameAllocationAlgorithm {
 
-    public EQUAL(int totalFrames) {
-        super(totalFrames);
-    }
-
     @Override
     public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple) {
         ArrayList<Process> processesList = COMPUTER.activeList;
         COMPUTER.ramSch.processFrameMap.clear();
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
-        // dodanie po jednej rameczce dla kazdego
-
+        // dodanie po jednej rameczce dla kazde
         int processesNum = processesList.size();
         if (processesNum == 0) return;
 

@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class PROP extends FrameAllocationAlgorithm {
-    public PROP(int totalFrames) {
-        super(totalFrames);
-    }
+
 
     int freeFramesToAllocate = totalFrames;
 

@@ -25,6 +25,9 @@ public class FrameAllocator {
     private Map<Process, Set<Integer>> pageAccessMap = new HashMap<>();
     private Map<Process, Integer> pageFaultsMap = new HashMap<>();
 
+    private Map<Process, Set<Integer>> zonalPageAccessMap = new HashMap<>();
+    private int zonalCounter = 0;
+
     boolean needsTriple = false;
     int counter;
     int window = 10;
@@ -38,7 +41,6 @@ public class FrameAllocator {
     }
 
     public void allocate() {
-
         processesStats.clear();
         for (Map.Entry<Process, Integer> entry : processesStatsMap.entrySet()) {
             processesStats.add(new Pair<>(entry.getKey(), entry.getValue()));
@@ -49,13 +51,25 @@ public class FrameAllocator {
             processesStats.clear();
             needsTriple = false;
             previousProcessCount = processList.size();
+
+
         } else if (algorithm instanceof algorithms.frameAllocationAlgorithms.EQUAL
                 || algorithm instanceof PROP) {
             algorithm.allocateFrames(processesStats, needsTriple);
             processesStats.clear();
             previousProcessCount = processList.size();
-        }
 
+
+        } else if (algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL) {
+
+            processesStats.clear();
+            for (Map.Entry<Process, Set<Integer>> entry : zonalPageAccessMap.entrySet()) {
+                processesStats.add(new Pair<>(entry.getKey(), entry.getValue().size()));
+            }
+            algorithm.allocateFrames(processesStats, needsTriple);
+            zonalPageAccessMap.clear();;
+            needsTriple = false;
+        }
     }
 
     public void doStep() {
@@ -74,8 +88,7 @@ public class FrameAllocator {
     }
 
     public void registerAnsweredRequest(Process p, int pageNumber, int curTime) {
-        if(algorithm instanceof algorithms.frameAllocationAlgorithms.MANUAL) {
-            //System.out.println("ID: " + p.getId());
+        if (algorithm instanceof algorithms.frameAllocationAlgorithms.MANUAL) {
             counter++;
             tempTriple = new Tripple<>(p, pageNumber, curTime);
 
@@ -96,16 +109,24 @@ public class FrameAllocator {
                 counter = 0;
             }
             if (needsTriple) {
-                //  System.out.println(processesStatsMap.size() + "+XDD");
+                allocate();
+            }
+        } else if (algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL) {
+            zonalCounter++;
+            tempTriple = new Tripple<>(p, pageNumber, curTime);
+
+            if (!zonalPageAccessMap.containsKey(p)) {
+                zonalPageAccessMap.put(p, new HashSet<>());
+            }
+
+            Set<Integer> accessedPages = zonalPageAccessMap.get(p);
+            accessedPages.add(pageNumber);
+
+            if (zonalCounter == window) {
+                zonalCounter = 0;
+                needsTriple=true;
                 allocate();
             }
         }
-        if(algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL){
-
-
-        }
-
-
-
     }
 }
