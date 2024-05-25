@@ -30,7 +30,7 @@ public class FrameAllocator {
 
     boolean needsTriple = false;
     int counter;
-    int window = 10;
+    int window = 20;
 
     public FrameAllocator(FrameAllocationAlgorithm algorithm) {
         this.algorithm = algorithm;
@@ -61,15 +61,20 @@ public class FrameAllocator {
 
 
         } else if (algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL) {
-
             processesStats.clear();
             for (Map.Entry<Process, Set<Integer>> entry : zonalPageAccessMap.entrySet()) {
+                //System.out.println(zonalPageAccessMap.size());
                 processesStats.add(new Pair<>(entry.getKey(), entry.getValue().size()));
+               // System.out.println("XDDDDDDDD: "+entry.getValue().size());
             }
+            //System.out.println("XDDD");
             algorithm.allocateFrames(processesStats, needsTriple);
-            zonalPageAccessMap.clear();;
+            //zonalPageAccessMap.clear();;
             needsTriple = false;
+            previousProcessCount = processList.size();
         }
+
+
     }
 
     public void doStep() {
@@ -111,22 +116,24 @@ public class FrameAllocator {
             if (needsTriple) {
                 allocate();
             }
-        } else if (algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL) {
+        }
+        else if (algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL) {
+           // System.out.println("Proces: "+p.getId());
+           // System.out.println("Strona: "+pageNumber);
             zonalCounter++;
             tempTriple = new Tripple<>(p, pageNumber, curTime);
-
             if (!zonalPageAccessMap.containsKey(p)) {
                 zonalPageAccessMap.put(p, new HashSet<>());
             }
-
             Set<Integer> accessedPages = zonalPageAccessMap.get(p);
             accessedPages.add(pageNumber);
 
-            if (zonalCounter == window) {
+            if (zonalCounter >= window) {
                 zonalCounter = 0;
-                needsTriple=true;
+                needsTriple = true;
                 allocate();
             }
         }
+
     }
 }
