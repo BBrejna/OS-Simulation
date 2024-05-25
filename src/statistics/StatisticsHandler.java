@@ -13,19 +13,23 @@ public class StatisticsHandler {
     public static void printStatistics() {
         results.sort(Comparator.comparing(InstanceInfo::getScore));
 
-        System.out.printf("-------------------------------------------------------------------------------------------------------------------------------%n");
+        String separator = "-------------------------------------------------------------------------------------------------------------------------------------%n";
+
+        String format = "| %-6s | %-15s | %-8s | %-8s | %5s | %7s | %9s | %9s | %9s | %4s | %7s | %9s |%n";
+
+        System.out.printf(separator);
         System.out.printf(" Project statistics %n");
         System.out.printf(" Each possible combination %n");
 
-        System.out.printf("-------------------------------------------------------------------------------------------------------------------------------%n");
-        System.out.printf("| %-6s | %-15s | %-8s | %-8s | %5s | %7s | %8s | %8s | %7s | %4s | %7s | %7s |%n", "CPU", "MEM", "RAM", "FRAMES", "PROC.", "CYCLES", "TURNAR.", "WAIT T.", "HDD ST.", "REJ.", "NO PAGE", "SCORE");
-        System.out.printf("-------------------------------------------------------------------------------------------------------------------------------%n");
+        System.out.printf(separator);
+        System.out.printf(format, "CPU", "MEM", "RAM", "FRAMES", "PROC.", "CYCLES", "TURNAR.", "WAIT T.", "HDD ST.", "REJ.", "NO PAGE", "SCORE");
+        System.out.printf(separator);
 
         for (InstanceInfo info : results) {
-            System.out.printf("| %-6s | %-15s | %-8s | %-8s | %5s | %7s | %8s | %8s | %7s | %4s | %7s | %7s |%n", info.cpuAlgo, info.memAlgo, info.ramAlgo, info.frameAlgo, info.processesNumber, info.cyclesDone, info.avgTurnaround, info.avgWaitTime, info.memStepsDone, info.memRejected, info.ramPageErrors, String.format("%.1f", info.getScore()));
+            System.out.printf(format, info.cpuAlgo, info.memAlgo, info.ramAlgo, info.frameAlgo, info.processesNumber, info.cyclesDone, String.format("%.1f", info.avgTurnaround), String.format("%.1f", info.avgWaitTime), info.memStepsDone, info.memRejected, String.format("%.1f", info.ramPageErrors), String.format("%.1f", info.getScore()));
         }
 
-        System.out.printf("-------------------------------------------------------------------------------------------------------------------------------%n");
+        System.out.printf(separator);
 
     }
 }
