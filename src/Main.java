@@ -7,6 +7,9 @@ import statistics.StatisticsHandler;
 import algorithms.ramAlgorithms.*;
 import algorithms.frameAllocationAlgorithms.*;
 
+import java.time.Duration;
+import java.time.Instant;
+
 public class Main {
     public static int memSize = SimulationParameters.MEM_SIZE;
     public static int ramSize = SimulationParameters.RAM_SIZE;
@@ -24,6 +27,8 @@ public class Main {
 
         int numOfCombinations = cpuAlgorithms.length * memAlgorithms.length * ramAlgorithms.length * frameAllocationAlgorithms.length;
         int iterator=0;
+
+        Instant start = Instant.now();
 
         for (CpuAlgorithm cpuAlgo : cpuAlgorithms) {
             for (MemAlgorithm memAlgo : memAlgorithms) {
@@ -57,7 +62,10 @@ public class Main {
             }
         }
 
+        Instant finish = Instant.now();
+
         System.out.println("\n\nFINISHED!");
+        System.out.println("TIME ELAPSED: "+Duration.between(start, finish));
         StatisticsHandler.printStatistics();
     }
 
