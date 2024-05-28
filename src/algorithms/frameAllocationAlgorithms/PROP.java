@@ -47,6 +47,7 @@ public class PROP extends FrameAllocationAlgorithm {
                 processFrameMap.get(p).add(frames.get(i));
             }
         }
+
         COMPUTER.ramSch.algorithm.resetAlgorithm();
     }
 }

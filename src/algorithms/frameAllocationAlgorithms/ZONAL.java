@@ -7,6 +7,8 @@ import tools.Pair;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ZONAL extends FrameAllocationAlgorithm {
     int frameCounter;
@@ -35,18 +37,19 @@ public class ZONAL extends FrameAllocationAlgorithm {
         for (Pair<Process, Integer> pair : Triples) {
             totalWSS += pair.second;
         }
+        Collections.sort(Triples, Comparator.comparing(t -> t.first.getId()));
 
         if (totalWSS <= freeFrames) {
-          //  System.out.println("TUuu:");
+            // System.out.println("TUuu:");
+            int triplesIndex = 0;
             for (Process process : processesList) {
-                for (Pair<Process, Integer> t : Triples) {
-                    if (t.first.equals(process)) {
-                        int allocate = t.second;
-                        for (int i = 0; i < allocate; i++) {
-                            processFrameMap.get(process).add(frameCounter);
-                            frameCounter++;
-                        }
+                if (triplesIndex < Triples.size() && Triples.get(triplesIndex).first.equals(process)) {
+                    int allocate = Triples.get(triplesIndex).second;
+                    for (int i = 0; i < allocate; i++) {
+                        processFrameMap.get(process).add(frameCounter);
+                        frameCounter++;
                     }
+                    triplesIndex++;
                 }
             }
         } else {
@@ -58,7 +61,6 @@ public class ZONAL extends FrameAllocationAlgorithm {
             }
             Process maxWSSProcess = maxWSSPair.first;
 
-
             ArrayList<Integer> removedFrames = processFrameMap.get(maxWSSProcess);
             if (removedFrames != null && removedFrames.size() > 1) {
                 freeFrames += removedFrames.size() - 1;
@@ -66,13 +68,13 @@ public class ZONAL extends FrameAllocationAlgorithm {
                 keepOneFrame.add(removedFrames.get(0));
                 processFrameMap.put(maxWSSProcess, keepOneFrame);
             }
-            //System.out.println("free: "+freeFrames);
+            // System.out.println("free: " + freeFrames);
 
             for (Process process : processesList) {
                 if (!process.equals(maxWSSProcess)) {
-                    int allocate = frameCounter/processesList.size();
-                    //int allocate = (int) (maxWSSPair.second * ((double) processFrameMap.get(process).size() / totalWSS));
-                   // System.out.println("CXD:"+allocate);
+                    int allocate = frameCounter / processesList.size();
+                    // int allocate = (int) (maxWSSPair.second * ((double) processFrameMap.get(process).size() / totalWSS));
+                    // System.out.println("CXD:" + allocate);
                     for (int i = 0; i < allocate; i++) {
                         if (freeFrames > 0) {
                             processFrameMap.get(process).add(frameCounter);

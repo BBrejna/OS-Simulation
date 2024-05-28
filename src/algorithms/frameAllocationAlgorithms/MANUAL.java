@@ -2,6 +2,7 @@ package algorithms.frameAllocationAlgorithms;
 
 import computer.COMPUTER;
 import computer.Process;
+import simulation.SimulationParameters;
 import tools.Pair;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Map;
 public class MANUAL extends FrameAllocationAlgorithm {
 
 
-    int window = 10;
+    int window = SimulationParameters.MANUAL_WINDOW;
     double upperThreshold = 0.5;
     double lowerThreshold = 0.2;
     int frameCounter;
