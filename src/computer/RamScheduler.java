@@ -19,6 +19,10 @@ public class RamScheduler {
         this.SIZE = SimulationParameters.RAM_SIZE;
     }
 
+    public void restartTime() {
+        algorithm.restartTime();
+    }
+
     // registerTask
     public void getRamRequest(Process p,int page){
         algorithm.registerTask(p,page);

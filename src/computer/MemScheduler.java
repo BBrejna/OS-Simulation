@@ -21,6 +21,10 @@ public class MemScheduler {
         else if (MODE == 2) algorithm.fdScan();
     }
 
+    public void restartTime() {
+        algorithm.restartTime();
+    }
+
     public void getMemoryRequest(Process p, int position, int toDoTime) {
         algorithm.registerTask(p, position, toDoTime, toDoTime!=-1 && MODE!=0);
     }

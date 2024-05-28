@@ -84,6 +84,8 @@ public class COMPUTER {
     public void restartTime() {
         clearLists();
         provider.restartTime();
+        memSch.restartTime();
+        ramSch.restartTime();
         curTime=0;
     }
 
