@@ -40,9 +40,9 @@ public class ProcessProvider {
         restartTime();
     }
 
-    public ProcessProvider(int totalProcessesNumber, int SIZE) {
-        this.totalProcessesNumber = totalProcessesNumber;
-        this.SIZE = SIZE;
+    public ProcessProvider() {
+        this.totalProcessesNumber = SimulationParameters.PROCESSES_NUMBER;
+        this.SIZE = SimulationParameters.MEM_SIZE;
 
         restartProvider();
     }

@@ -11,11 +11,8 @@ import java.time.Duration;
 import java.time.Instant;
 
 public class Main {
-    public static int memSize = SimulationParameters.MEM_SIZE;
-    public static int ramSize = SimulationParameters.RAM_SIZE;
-
     public static void main(String[] args) {
-        ProcessProvider pp = new ProcessProvider(SimulationParameters.PROCESSES_NUMBER, memSize);
+        ProcessProvider pp = new ProcessProvider();
 
         CpuAlgorithm[] cpuAlgorithms = new CpuAlgorithm[]{new algorithms.cpuAlgorithms.FCFS(), new RR(), new SJF(), new SRTF()};
         MemAlgorithm[] memAlgorithms = new MemAlgorithm[]{
