@@ -53,7 +53,10 @@ public class Main {
 //                System.out.println("post-work");
                         computer.writeStats();
                         computer.restartTime();
-                        System.out.println(++iterator+"/"+numOfCombinations+" DONE");
+
+                        Instant middle = Instant.now();
+
+                        System.out.println(++iterator+"/"+numOfCombinations+" DONE. TIME ELAPSED: "+Duration.between(start,middle));
                     }
                 }
             }
