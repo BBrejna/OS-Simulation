@@ -7,4 +7,5 @@ public class SimulationParameters {
     public static int MEM_SIZE = 50;
     public static int RAM_SIZE = 10;
     public static int MAX_PROCESS_PAGE_NUMBER = 4;
+    public static int RR_DELTA_TIME = 2;
 }

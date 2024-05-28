@@ -39,4 +39,10 @@ public class CSCAN extends MemAlgorithm {
         }
     }
 
+    @Override
+    public void restartTime() {
+        super.restartTime();
+        lockedReturn = false;
+    }
+
 }

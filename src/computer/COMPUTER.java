@@ -98,7 +98,7 @@ public class COMPUTER {
         String frameAllocatorName = ramSch.frameAllocator.algorithm.getClass().getSimpleName();
         int memStepsDone = COMPUTER.memSch.algorithm.getSteps();
         int memRejected = COMPUTER.memSch.algorithm.getRejected();
-        double ramPageErrors = COMPUTER.ramSch.algorithm.getPageErrorsNumber();
+        int ramPageErrors = COMPUTER.ramSch.algorithm.getPageErrorsNumber();
 
 
 //        System.out.println("-------------------------------------------");
@@ -119,7 +119,6 @@ public class COMPUTER {
         if (!processes.isEmpty()) {
             avg_wait /= processes.size();
             avg_turnaround /= processes.size();
-            ramPageErrors /= processes.size();
         }
 //        System.out.println("Avg turnaround time: " + avg_turnaround);
 //        System.out.println("Avg wait time: " + avg_wait);

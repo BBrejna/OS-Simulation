@@ -2,9 +2,10 @@ package algorithms.cpuAlgorithms;
 
 import java.util.ArrayList;
 import computer.Process;
+import simulation.SimulationParameters;
 
 public class RR extends CpuAlgorithm {
-    public static int deltaTime = 1;
+    public static int deltaTime = SimulationParameters.RR_DELTA_TIME;
     int index;
     int remainingDelta;
 

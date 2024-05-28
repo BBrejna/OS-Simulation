@@ -81,16 +81,18 @@ public class Process {
     public void doStep() {
         if (state != 0) return;
         if (memRequestId < memoryRequests.size()) {
-            Tripple<Integer, Integer, Integer> memRequest = memoryRequests.get(memRequestId++);
+            Tripple<Integer, Integer, Integer> memRequest = memoryRequests.get(memRequestId);
             if (memRequest.first == cpuTime - remainingTime) {
+                memRequestId++;
                 COMPUTER.getMemoryScheduler().getMemoryRequest(this, memRequest.second, memRequest.third + (memRequest.third == -1 ? 0 : COMPUTER.curTime));
 //            memoryRequests.remove(0);
                 state = 1;
             }
         }
         if (ramRequestId < ramRequests.size()) {
-            Pair<Integer, Integer> ramRequest = ramRequests.get(ramRequestId++);
+            Pair<Integer, Integer> ramRequest = ramRequests.get(ramRequestId);
             if (ramRequest.first == cpuTime - remainingTime) {
+                ramRequestId++;
                 COMPUTER.getRamScheduler().getRamRequest(this, ramRequest.second);
 //            ramRequests.remove(0);
                 state = 2;
