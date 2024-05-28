@@ -1,5 +1,6 @@
 package computer;
 
+import algorithms.memAlgorithms.MemTask;
 import simulation.SimulationParameters;
 import tools.Pair;
 import tools.Tripple;
@@ -16,12 +17,19 @@ public class Process {
     int state = 0;
     //frame allocation
     int pageCount;
-
-
-    private List<Integer> pageReferences;
+    int ramRequestId=0;
+    int memRequestId=0;
 
     ArrayList<Tripple<Integer,Integer,Integer>> memoryRequests = new ArrayList<>();
     ArrayList<Pair<Integer,Integer>> ramRequests = new ArrayList<>();
+
+    public void restartTime() {
+        ramRequestId=0;
+        memRequestId=0;
+        state=0;
+        remainingTime=cpuTime;
+        finishTime=(cpuTime == 0 ? arrivalTime : -1);
+    }
 
     void generateRequests(int SIZE) {
         Random random = new Random();
@@ -72,15 +80,21 @@ public class Process {
 
     public void doStep() {
         if (state != 0) return;
-        if (!memoryRequests.isEmpty() && memoryRequests.get(0).first == cpuTime-remainingTime) {
-            COMPUTER.getMemoryScheduler().getMemoryRequest(this, memoryRequests.get(0).second, COMPUTER.curTime+memoryRequests.get(0).third);
-            memoryRequests.remove(0);
-            state = 1;
+        if (!memoryRequests.isEmpty() && memRequestId < memoryRequests.size()) {
+            Tripple<Integer, Integer, Integer> memRequest = memoryRequests.get(memRequestId++);
+            if (memRequest.first == cpuTime - remainingTime) {
+                COMPUTER.getMemoryScheduler().getMemoryRequest(this, memRequest.second, memRequest.third + (memRequest.third == -1 ? 0 : COMPUTER.curTime));
+//            memoryRequests.remove(0);
+                state = 1;
+            }
         }
-        if (!ramRequests.isEmpty() && ramRequests.get(0).first == cpuTime-remainingTime) {
-            COMPUTER.getRamScheduler().getRamRequest(this, ramRequests.get(0).second);
-            ramRequests.remove(0);
-            state = 2;
+        if (!ramRequests.isEmpty() && ramRequestId < ramRequests.size()) {
+            Pair<Integer, Integer> ramRequest = ramRequests.get(ramRequestId++);
+            if (ramRequest.first == cpuTime - remainingTime) {
+                COMPUTER.getRamScheduler().getRamRequest(this, ramRequest.second);
+//            ramRequests.remove(0);
+                state = 2;
+            }
         }
         remainingTime--;
         if (remainingTime == 0) {
@@ -127,15 +141,6 @@ public class Process {
 
     public int getPageCount() {
         return pageCount;
-    }
-
-
-    public List<Integer> getPageReferences() {
-        return pageReferences;
-    }
-
-    public void addPageReference(int page) {
-        pageReferences.add(page);
     }
 
     @Override

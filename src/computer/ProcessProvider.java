@@ -27,9 +27,10 @@ public class ProcessProvider {
 
     public void restartTime() {
         for (int i = 0; i < totalProcessesNumber; i++) {
-            int cpuTime = processes.get(i).getCpuTime();
-            int arrivalTime = processes.get(i).getArrivalTime();
-            processes.set(i, new Process(i,cpuTime,arrivalTime,SIZE));
+//            int cpuTime = processes.get(i).getCpuTime();
+//            int arrivalTime = processes.get(i).getArrivalTime();
+//            processes.set(i, new Process(i,cpuTime,arrivalTime,SIZE));
+            processes.get(i).restartTime();
         }
         timeNext = processes.get(0).getArrivalTime();
         processesGenerated = 0;

@@ -28,7 +28,7 @@ public class InstanceInfo {
     }
 
     public double getScore() {
-        return avgWaitTime + memRejected*0.1 + ramPageErrors*0.2;
+        return avgWaitTime*0.7 + memRejected*0.1 + ramPageErrors*0.2;
     }
 
 }

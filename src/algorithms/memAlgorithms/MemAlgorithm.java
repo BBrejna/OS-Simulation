@@ -35,6 +35,7 @@ public abstract class MemAlgorithm {
     public void restartTime() {
         position=0;
         rejected=0;
+        steps=0;
     }
 
     public void registerTask(Process p, int cylinder, int toDoTime, boolean priority) {
