@@ -20,7 +20,7 @@ public class MainTask4 {
         public static void main(String[] args) {
             ProcessProvider pp = new ProcessProvider();
 
-            CpuAlgorithm cpuAlgo = new RR();
+            CpuAlgorithm cpuAlgo = new SRTF();
             MemAlgorithm memAlgo = new CSCAN(2);
             RamAlgorithm ramAlgo = new LRU();
             FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),new MANUAL(),new ZONAL()};
