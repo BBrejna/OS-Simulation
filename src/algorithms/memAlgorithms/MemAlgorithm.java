@@ -50,11 +50,13 @@ public abstract class MemAlgorithm {
     protected void doPriorityEdf(){
 
         Collections.sort(waitingPriorityTasks, MemTask.toDoTimeComparator);
-        if (!waitingPriorityTasks.isEmpty() && position == waitingPriorityTasks.get(0).cylinder)
-            if (waitingPriorityTasks.get(0).toDoTime < Math.abs(waitingPriorityTasks.get(0).cylinder - position))
-                rejected++;
+//        if (!waitingPriorityTasks.isEmpty() && position == waitingPriorityTasks.get(0).cylinder)
+//            if (waitingPriorityTasks.get(0).toDoTime < Math.abs(waitingPriorityTasks.get(0).cylinder - position))
+//                rejected++;
 
         if (waitingPriorityTasks.get(0).cylinder == position) {
+            if (waitingPriorityTasks.get(0).toDoTime < 0)
+                rejected++;
             //System.out.println("Zakończono zadanie priorytetowe " + waitingPriorityTasks.get(0));
             answerTask(waitingPriorityTasks,0);
         }
@@ -78,13 +80,15 @@ public abstract class MemAlgorithm {
     protected void doPriorityFdScan(){
 
         Collections.sort(waitingPriorityTasks, MemTask.toDoTimeComparator);
-        if (!waitingPriorityTasks.isEmpty() && position == waitingPriorityTasks.get(0).cylinder)
-            if (waitingPriorityTasks.get(0).toDoTime < Math.abs(waitingPriorityTasks.get(0).cylinder - position))
-                rejected++;
+//        if (!waitingPriorityTasks.isEmpty() && position == waitingPriorityTasks.get(0).cylinder)
+//            if (waitingPriorityTasks.get(0).toDoTime < Math.abs(waitingPriorityTasks.get(0).cylinder - position))
+//                rejected++;
 
         for (int i = 0; i < waitingPriorityTasks.size(); i++) {
             waitingPriorityTasks.get(i).toDoTime--;
             if (position == waitingPriorityTasks.get(i).cylinder) {
+                if (waitingPriorityTasks.get(i).toDoTime < 0)
+                    rejected++;
                 //System.out.println("Zakończono zadanie real time " + waitingPriorityTasks.get(i));
                 answerTask(waitingPriorityTasks,i);
                 i--;

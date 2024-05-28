@@ -38,9 +38,9 @@ public class Process {
         int localityFactor = pageCount / 2;
 
         for (int i = 0; i < cpuTime-1; i++) {
-            if (random.nextInt(10) < 3) {
+            if (random.nextDouble(1) <= SimulationParameters.PROCESS_REQUEST_PROBABILITY_ON_TICK) {
                 // ANY REQUEST
-                if (random.nextInt(3) < 2) {
+                if (random.nextDouble(1) <= SimulationParameters.PROCESS_REQUEST_PROBABILITY_RAM) {
                     // RAM request
                     int potentialRequest = random.nextInt(pageCount);
                     if (!ramRequests.isEmpty()) {
@@ -53,7 +53,7 @@ public class Process {
 
                 } else {
                     // MEM request
-                    memoryRequests.add(new Tripple(i, random.nextInt(SIZE+1), random.nextInt(10)<9 ? -1 : i+random.nextInt(SIZE/2)));
+                    memoryRequests.add(new Tripple(i, random.nextInt(SIZE+1), random.nextDouble(1) <= SimulationParameters.PROCESS_MEM_REQUEST_PRIORITY_PROBABILITY ? i+random.nextInt(SIZE/4) : -1));
                 }
             }
         }
