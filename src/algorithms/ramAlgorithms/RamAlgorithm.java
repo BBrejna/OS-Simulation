@@ -19,6 +19,7 @@ public abstract class RamAlgorithm {
     public void restartTime() {
         resultCounter = 0;
         nextTask = null;
+        frames = null;
     }
 
     public void registerTask(Process p, int page) {

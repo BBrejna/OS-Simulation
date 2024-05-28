@@ -7,9 +7,6 @@ public class SSTF extends MemAlgorithm {
     public SSTF(int MODE) {
         super(MODE);
     }
-    public SSTF(int MODE, int position) {
-        super(MODE, position);
-    }
 
     @Override
     public void registerTask (Process p, int cylinder, int toDoTime, boolean priority){

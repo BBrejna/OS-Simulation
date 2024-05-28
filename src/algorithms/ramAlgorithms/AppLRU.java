@@ -47,6 +47,11 @@ public class AppLRU extends RamAlgorithm {
     public void resetAlgorithm() {
 
         for (Process p : COMPUTER.activeList) {
+            if (p.isDone()) {
+                appLruDelQueue.remove(p);
+                referenceBitMap.remove(p);
+                continue;
+            }
             if (!appLruDelQueue.containsKey(p)) {
                 appLruDelQueue.put(p, new LinkedList<>());
                 referenceBitMap.put(p, new HashMap<>());
@@ -78,5 +83,13 @@ public class AppLRU extends RamAlgorithm {
     public void clearProcess(Process p) {
         appLruDelQueue.remove(p);
         referenceBitMap.remove(p);
+    }
+
+    @Override
+    public void restartTime() {
+        super.restartTime();
+        appLruDelQueue.clear();
+        referenceBitMap.clear();
+
     }
 }

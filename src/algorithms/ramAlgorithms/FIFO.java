@@ -30,6 +30,10 @@ public class FIFO extends RamAlgorithm {
     public void resetAlgorithm() {
 
         for (Process p : COMPUTER.activeList) {
+            if (p.isDone()) {
+                fifoDelQueue.remove(p);
+                continue;
+            }
             if (!fifoDelQueue.containsKey(p)) fifoDelQueue.put(p, new LinkedList<>());
 
             ArrayList<Integer> toDel = new ArrayList<>();
@@ -55,5 +59,11 @@ public class FIFO extends RamAlgorithm {
     @Override
     public void clearProcess(Process p) {
         fifoDelQueue.remove(p);
+    }
+
+    @Override
+    public void restartTime() {
+        super.restartTime();
+        fifoDelQueue.clear();
     }
 }

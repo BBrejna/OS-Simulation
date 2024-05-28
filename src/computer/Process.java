@@ -80,7 +80,7 @@ public class Process {
 
     public void doStep() {
         if (state != 0) return;
-        if (!memoryRequests.isEmpty() && memRequestId < memoryRequests.size()) {
+        if (memRequestId < memoryRequests.size()) {
             Tripple<Integer, Integer, Integer> memRequest = memoryRequests.get(memRequestId++);
             if (memRequest.first == cpuTime - remainingTime) {
                 COMPUTER.getMemoryScheduler().getMemoryRequest(this, memRequest.second, memRequest.third + (memRequest.third == -1 ? 0 : COMPUTER.curTime));
@@ -88,7 +88,7 @@ public class Process {
                 state = 1;
             }
         }
-        if (!ramRequests.isEmpty() && ramRequestId < ramRequests.size()) {
+        if (ramRequestId < ramRequests.size()) {
             Pair<Integer, Integer> ramRequest = ramRequests.get(ramRequestId++);
             if (ramRequest.first == cpuTime - remainingTime) {
                 COMPUTER.getRamScheduler().getRamRequest(this, ramRequest.second);

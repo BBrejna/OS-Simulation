@@ -41,6 +41,10 @@ public class LRU extends RamAlgorithm {
     @Override
     public void resetAlgorithm() {
         for (Process p : COMPUTER.activeList) {
+            if (p.isDone()) {
+                lruFramesOrder.remove(p);
+                continue;
+            }
             if (!lruFramesOrder.containsKey(p)) lruFramesOrder.put(p, new ArrayList<>());
 
             ArrayList<Integer> toDel = new ArrayList<>();
@@ -62,5 +66,10 @@ public class LRU extends RamAlgorithm {
 
 
         }
+    }
+    @Override
+    public void restartTime() {
+        super.restartTime();
+        lruFramesOrder.clear();
     }
 }

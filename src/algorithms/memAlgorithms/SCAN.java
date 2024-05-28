@@ -5,9 +5,6 @@ public class SCAN extends MemAlgorithm {
     public SCAN(int MODE) {
         super(MODE);
     }
-    public SCAN(int MODE, int position) {
-        super(MODE, position);
-    }
 
     public void doNormal(){
 

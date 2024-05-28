@@ -6,9 +6,6 @@ public class CSCAN extends MemAlgorithm {
     public CSCAN(int MODE) {
         super(MODE);
     }
-    public CSCAN(int MODE, int position) {
-        super(MODE, position);
-    }
 
     public void doNormal(){
         if (lockedReturn) {

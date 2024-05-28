@@ -5,9 +5,6 @@ public class FCFS extends MemAlgorithm {
     public FCFS(int MODE) {
         super(MODE);
     }
-    public FCFS(int MODE, int position) {
-        super(MODE, position);
-    }
 
     public void doNormal(){
         //fcfs
