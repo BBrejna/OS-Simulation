@@ -8,8 +8,8 @@ import tools.Tripple;
 import java.util.*;
 
 public class Process {
-
     private int id;
+    private final int cpuId;
     private int cpuTime;
     private int arrivalTime;
     private int remainingTime;
@@ -60,13 +60,18 @@ public class Process {
 
     }
 
-    public Process(int id, int cpuTime, int arrivalTime, int SIZE) {
+    public Process(int id, int cpuId, int cpuTime, int arrivalTime, int SIZE) {
         this.id = id;
+        this.cpuId = cpuId;
         this.cpuTime = cpuTime;
         this.remainingTime = cpuTime;
         this.arrivalTime = arrivalTime;
         this.finishTime = (cpuTime == 0 ? arrivalTime : -1);
         generateRequests(SIZE);
+    }
+
+    public int getCpuId() {
+        return cpuId;
     }
 
     public void getMemoryAnswer(Integer answer) {

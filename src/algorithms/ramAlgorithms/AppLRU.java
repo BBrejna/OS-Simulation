@@ -45,38 +45,40 @@ public class AppLRU extends RamAlgorithm {
 
     @Override
     public void resetAlgorithm() {
+        for (int processorId = 0; processorId < COMPUTER.processorsNumber; processorId++) {
 
-        for (Process p : COMPUTER.activeList) {
-            if (p.isDone()) {
-                appLruDelQueue.remove(p);
-                referenceBitMap.remove(p);
-                continue;
-            }
-            if (!appLruDelQueue.containsKey(p)) {
-                appLruDelQueue.put(p, new LinkedList<>());
-                referenceBitMap.put(p, new HashMap<>());
-            }
-
-            ArrayList<Integer> toDel = new ArrayList<>();
-            for (Integer frame : appLruDelQueue.get(p)) {
-                if (!COMPUTER.ramSch.processFrameMap.get(p).contains(frame)) {
-                    toDel.add(frame);
+            for (Process p : COMPUTER.activeList.get(processorId)) {
+                if (p.isDone()) {
+                    appLruDelQueue.remove(p);
+                    referenceBitMap.remove(p);
+                    continue;
                 }
-            }
-
-            for (Integer i : toDel) {
-                appLruDelQueue.get(p).remove(i);
-                referenceBitMap.get(p).remove(i);
-            }
-
-            for (Integer frame : COMPUTER.ramSch.processFrameMap.get(p)) {
-                if (!appLruDelQueue.get(p).contains(frame) && COMPUTER.frames.get(frame) != -1){
-                    appLruDelQueue.get(p).add(frame);
-                    referenceBitMap.get(p).put(frame, false);
+                if (!appLruDelQueue.containsKey(p)) {
+                    appLruDelQueue.put(p, new LinkedList<>());
+                    referenceBitMap.put(p, new HashMap<>());
                 }
+
+                ArrayList<Integer> toDel = new ArrayList<>();
+                for (Integer frame : appLruDelQueue.get(p)) {
+                    if (!COMPUTER.ramSch.processFrameMap.get(p).contains(frame)) {
+                        toDel.add(frame);
+                    }
+                }
+
+                for (Integer i : toDel) {
+                    appLruDelQueue.get(p).remove(i);
+                    referenceBitMap.get(p).remove(i);
+                }
+
+                for (Integer frame : COMPUTER.ramSch.processFrameMap.get(p)) {
+                    if (!appLruDelQueue.get(p).contains(frame) && COMPUTER.frames.get(frame) != -1) {
+                        appLruDelQueue.get(p).add(frame);
+                        referenceBitMap.get(p).put(frame, false);
+                    }
+                }
+
+
             }
-
-
         }
     }
     @Override

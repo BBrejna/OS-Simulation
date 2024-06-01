@@ -1,10 +1,13 @@
 package computer;
 
 import algorithms.ramAlgorithms.RamTask;
+import simulation.SimulationParameters;
 import statistics.InstanceInfo;
 import statistics.StatisticsHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class COMPUTER {
@@ -15,9 +18,10 @@ public class COMPUTER {
     //frame allocation
     public static RamScheduler ramSch;
 
+    public static int processorsNumber;
     public static int curTime=0;
-    public static ArrayList<Process> activeList = new ArrayList<>();
-    public static ArrayList<Process> finishedList = new ArrayList<>();
+    public static ArrayList<ArrayList<Process>> activeList = new ArrayList<>();
+    public static ArrayList<ArrayList<Process>> finishedList = new ArrayList<>();
     public static ArrayList<Integer> memory = new ArrayList<>();
 
     //frame allocation
@@ -29,7 +33,11 @@ public class COMPUTER {
         COMPUTER.memSch = memSch;
         COMPUTER.ramSch = ramSch;
 
-
+        processorsNumber = SimulationParameters.PROCESSORS_NUMBER;
+        for (int i = 0; i < processorsNumber; i++) {
+            activeList.add(new ArrayList<>());
+            finishedList.add(new ArrayList<>());
+        }
 
         memory = new ArrayList<>();
         int SIZE = memSch.SIZE;
@@ -73,8 +81,8 @@ public class COMPUTER {
         p.getRamAnswer(answer);
     }
 
-    public static void registerProcess(Process p) {
-        activeList.add(p);
+    public static void registerProcess(Process p, int processorId) {
+        activeList.get(processorId).add(p);
     }
 
     private void clearLists() {
@@ -110,15 +118,21 @@ public class COMPUTER {
 //        else if (memSch.algorithm.MODE == 2) System.out.println("fd-scan");
 
         double avg_wait = 0, avg_turnaround = 0;
-        ArrayList<Process> processes = COMPUTER.finishedList;
-        for (Process p : processes) {
-//            System.out.println(p);
-            avg_wait += p.getWaitTime();
-            avg_turnaround += p.getTurnAroundTime();
+
+        int processesNumber = 0;
+
+        for (int i = 0; i < processorsNumber; i++) {
+            ArrayList<Process> processes = COMPUTER.finishedList.get(i);
+            processesNumber += processes.size();
+            for (Process p : processes) {
+    //            System.out.println(p);
+                avg_wait += p.getWaitTime();
+                avg_turnaround += p.getTurnAroundTime();
+            }
         }
-        if (!processes.isEmpty()) {
-            avg_wait /= processes.size();
-            avg_turnaround /= processes.size();
+        if (processesNumber > 0) {
+            avg_wait /= processesNumber;
+            avg_turnaround /= processesNumber;
         }
 //        System.out.println("Avg turnaround time: " + avg_turnaround);
 //        System.out.println("Avg wait time: " + avg_wait);
@@ -127,6 +141,6 @@ public class COMPUTER {
 //        System.out.println("HDD steps done: " + COMPUTER.memSch.algorithm.getSteps());
 //        System.out.println("HDD rejected priority: " + COMPUTER.memSch.algorithm.getRejected());
 
-        StatisticsHandler.registerInstance(new InstanceInfo(processes.size(), COMPUTER.curTime, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
+        StatisticsHandler.registerInstance(new InstanceInfo(processesNumber, COMPUTER.curTime, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
     }
 }
