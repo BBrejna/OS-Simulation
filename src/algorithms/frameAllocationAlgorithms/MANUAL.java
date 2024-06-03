@@ -20,62 +20,56 @@ public class MANUAL extends FrameAllocationAlgorithm {
     int last;
     @Override
     public void allocateFrames(ArrayList<Pair<Process, Integer>> triples, boolean needsTriple) {
-        ArrayList<Process> processesList = COMPUTER.activeList;
+       // ArrayList<Process> processesList = COMPUTER.activeList;
+        ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
         COMPUTER.ramSch.processFrameMap.clear();
-        Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
-        int processesNum = processesList.size();
-        if (processesNum == 0) return;
         int k=0;
-            for (Process p : processesList) {
-              ArrayList<Integer> framess = new ArrayList<>();
-                framess.add(k);
-                 k++;
-
-                //System.out.println("xd");
-                processFrameMap.remove(p);
-                processFrameMap.put(p, framess);
-
-            }
-        int frameToAllocate = totalFrames / processesNum;
         frameCounter = 0;
-        for (Process p : processesList) {
+        Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
+        for (ArrayList<Process> processGroup : processesList) {
+            int frameToAllocateForGroup = totalFrames/processesList.size();
+            max /=processesList.size();
+            int processesNum = processGroup.size();
+            if (processesNum == 0) return;
+            for (Process p : processGroup) {
+                  ArrayList<Integer> framess = new ArrayList<>();
+                    framess.add(k);
+                    k++;
+                    frameToAllocateForGroup--;
+                    processFrameMap.remove(p);
+                    processFrameMap.put(p, framess);
 
-            ArrayList<Integer> frames = new ArrayList<>();
-            for (int i = 0; i < frameToAllocate; i++) {
-                frames.add(frameCounter);
-                frameCounter++;
+
             }
-
-            for (int i = 0; i < frames.size(); i++) {
-                ArrayList<Integer> processFrames = processFrameMap.get(p);
-                if (processFrames == null) {
-                    processFrames = new ArrayList<>();
-                    processFrames.add(frameCounter);
-                    processFrameMap.put(p, processFrames);
+            frameCounter = k;
+            int frameToAllocate = frameToAllocateForGroup / processesList.size()/processesNum; // totalFrames trzeba zmienić
+            for (Process p : processGroup) {
+                ArrayList<Integer> frames = new ArrayList<>();
+                for (int i = 0; i < frameToAllocate; i++) {
+                    frames.add(frameCounter);
+                    frameCounter++;
+                    frameToAllocate--;
                 }
-                processFrames.add(frames.get(i));
+                for (int i = 0; i < frames.size(); i++) {
+                    ArrayList<Integer> processFrames = processFrameMap.get(p);
+                    if (processFrames == null) {
+                        processFrames = new ArrayList<>();
+                        processFrames.add(frameCounter);
+                        processFrameMap.put(p, processFrames);
+                    }
+                    processFrames.add(frames.get(i));
+                }
             }
 
-/*            for (int i = 0; i < frames.size(); i++) {
-                processFrameMap.get(p).add(frames.get(i));
-            }*/
-           // processFrameMap.put(p, frames);
-        }
-
-        if (needsTriple) {
-            adjustFrameAllocation(processesList, triples);
-           // System.out.println("DD");
+            if (needsTriple) {
+                adjustFrameAllocation(processGroup, triples,frameToAllocate);
+            }
         }
 
         COMPUTER.ramSch.algorithm.resetAlgorithm();
     }
 
-    private void adjustFrameAllocation(ArrayList<Process> processesList, ArrayList<Pair<Process, Integer>> triples) {
-        //System.out.println("XD");
-        int freeFrames = totalFrames-frameCounter;
-        //System.out.println("free: "+freeFrames);
-        //System.out.println(triples);
-       // System.out.println("Rozmiae: "+triples.size());
+    private void adjustFrameAllocation(ArrayList<Process> processesList, ArrayList<Pair<Process, Integer>> triples,int freeFrames) {
         for (Process p : processesList) {
             int index = -1;
             for (int j = 0; j < triples.size(); j++) {

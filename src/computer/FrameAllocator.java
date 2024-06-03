@@ -1,7 +1,6 @@
 package computer;
 
 import algorithms.frameAllocationAlgorithms.FrameAllocationAlgorithm;
-import algorithms.frameAllocationAlgorithms.PROP;
 import simulation.SimulationParameters;
 import tools.Pair;
 import tools.Tripple;
@@ -13,37 +12,40 @@ import java.util.Map;
 import java.util.Set;
 
 public class FrameAllocator {
+    int activeSize;
     public final FrameAllocationAlgorithm algorithm;
     private ArrayList<Process> processList;
+    private ArrayList<ArrayList<Process>> processListSecond;
+
+    private Map<Integer, ArrayList<Process>> processMap = new HashMap<>();
+    private Map<Integer, ArrayList<Process>> processPrevMap = new HashMap<>();
+
+    //private Map<Integer, ArrayList<Process>> processPrevMap = new HashMap<>();
+
     private int previousProcessCount;
     private boolean needsRecalculation;
-    public Map<Process, ArrayList<Integer>> processFrameMap = new HashMap<>();
     public ArrayList<Pair<Process, Integer>> processesStats = new ArrayList<>();
     private Map<Process, Integer> processesStatsMap = new HashMap<>();
-    Tripple<Process, Integer, Integer> tempTriple;
-    ArrayList<Process> prev;
+    private Tripple<Process, Integer, Integer> tempTriple;
     private Map<Process, Set<Integer>> pageAccessMap = new HashMap<>();
     private Map<Process, Integer> pageFaultsMap = new HashMap<>();
     private Map<Process, Set<Integer>> zonalPageAccessMap = new HashMap<>();
     private int zonalCounter = 0;
-    boolean needsTriple = false;
-    int counter;
-    int window_manual = SimulationParameters.MANUAL_WINDOW;
-    int window_zonal = SimulationParameters.ZONAL_WINDOW;
-
+    private boolean needsTriple = false;
+    private int counter;
+    private int window_manual = SimulationParameters.MANUAL_WINDOW;
+    private int window_zonal = SimulationParameters.ZONAL_WINDOW;
+    private boolean firstRun = true;
 
     public FrameAllocator(FrameAllocationAlgorithm algorithm) {
-        fetchProcessList();
         this.algorithm = algorithm;
-        this.previousProcessCount = processList.size();
-        this.prev = new ArrayList<>();
+        fetchProcessList();
     }
 
     public void allocate() {
-        if(algorithm instanceof algorithms.frameAllocationAlgorithms.EQUAL  || algorithm instanceof algorithms.frameAllocationAlgorithms.PROP){
+        if (algorithm instanceof algorithms.frameAllocationAlgorithms.EQUAL || algorithm instanceof algorithms.frameAllocationAlgorithms.PROP) {
             algorithm.allocateFrames(processesStats, needsTriple);
             processesStats.clear();
-            previousProcessCount = processList.size();
         }
 
         if (algorithm instanceof algorithms.frameAllocationAlgorithms.MANUAL) {
@@ -54,8 +56,6 @@ public class FrameAllocator {
             algorithm.allocateFrames(processesStats, needsTriple);
             processesStats.clear();
             needsTriple = false;
-            previousProcessCount = processList.size();
-
         } else if (algorithm instanceof algorithms.frameAllocationAlgorithms.ZONAL) {
             processesStats.clear();
             for (Map.Entry<Process, Set<Integer>> entry : zonalPageAccessMap.entrySet()) {
@@ -63,25 +63,38 @@ public class FrameAllocator {
             }
             algorithm.allocateFrames(processesStats, needsTriple);
             needsTriple = false;
-            previousProcessCount = processList.size();
         }
     }
 
     public void doStep() {
         fetchProcessList();
-        if (!processList.equals(prev)) {
-            needsRecalculation = true;
+        int k = 0;
+        for (ArrayList<Process> list : processListSecond) {
+            ArrayList<Process> prevList = processPrevMap.get(k);
+            if (!list.equals(prevList)) {
+                needsRecalculation = true;
+            }
+            if (needsRecalculation || needsTriple) {
+                allocate();
+                needsRecalculation = false;
+            }
+            processPrevMap.put(k, new ArrayList<>(list));
+            k++;
         }
-        if (needsRecalculation || needsTriple ) {
-            allocate();
-            needsRecalculation = false;
-        }
-        prev = new ArrayList<>(processList);
     }
 
     private void fetchProcessList() {
-        processList = COMPUTER.activeList;
+        processListSecond = COMPUTER.activeList;
+        if (firstRun) {
+            int k = 0;
+            for (ArrayList<Process> list : processListSecond) {
+                processPrevMap.put(k, new ArrayList<>(list));
+                k++;
+            }
+            firstRun = false;
+        }
     }
+
     public void registerAnsweredRequest(Process p, int pageNumber, int curTime) {
         if (algorithm instanceof algorithms.frameAllocationAlgorithms.MANUAL) {
             counter++;
