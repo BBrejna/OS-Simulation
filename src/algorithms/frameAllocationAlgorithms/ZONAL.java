@@ -33,8 +33,11 @@ public class ZONAL extends FrameAllocationAlgorithm {
             }
             frameCounter = k;
             int totalWSS = 0;
+
             for (Pair<Process, Integer> pair : Triples) {
-                totalWSS += pair.second;
+                if (processGroup.contains(pair.first)) {
+                    totalWSS += pair.second;
+                }
             }
             Collections.sort(Triples, Comparator.comparing(t -> t.first.getId()));
 
@@ -54,12 +57,11 @@ public class ZONAL extends FrameAllocationAlgorithm {
             } else {
                 Pair<Process, Integer> maxWSSPair = Triples.get(0);
                 for (Pair<Process, Integer> pair : Triples) {
-                    if (pair.second > maxWSSPair.second) {
+                    if (processGroup.contains(pair.first) && pair.second > maxWSSPair.second) {
                         maxWSSPair = pair;
                     }
                 }
                 Process maxWSSProcess = maxWSSPair.first;
-
                 ArrayList<Integer> removedFrames = processFrameMap.get(maxWSSProcess);
                 if (removedFrames != null && removedFrames.size() > 1) {
                     frameToAllocateForGroup += removedFrames.size() - 1;
@@ -67,20 +69,19 @@ public class ZONAL extends FrameAllocationAlgorithm {
                     keepOneFrame.add(removedFrames.get(0));
                     processFrameMap.put(maxWSSProcess, keepOneFrame);
                 }
-                // System.out.println("free: " + freeFrames);
 
                 for (Process process : processGroup) {
                     if (!process.equals(maxWSSProcess)) {
-                        int allocate = frameCounter / processesList.size();
-                        // int allocate = (int) (maxWSSPair.second * ((double) processFrameMap.get(process).size() / totalWSS));
-                        // System.out.println("CXD:" + allocate);
+                        int allocate = frameToAllocateForGroup / (processGroup.size() - 1);
+                        ArrayList<Integer> frames = processFrameMap.getOrDefault(process, new ArrayList<>());
                         for (int i = 0; i < allocate; i++) {
                             if (frameToAllocateForGroup > 0) {
-                                processFrameMap.get(process).add(frameCounter);
+                                frames.add(frameCounter);
                                 frameCounter++;
                                 frameToAllocateForGroup--;
                             }
                         }
+                        processFrameMap.put(process, frames);
                     }
                 }
             }

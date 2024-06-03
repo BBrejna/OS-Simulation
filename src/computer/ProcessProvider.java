@@ -21,6 +21,7 @@ public class ProcessProvider {
         for (int i = 0; i < totalProcessesNumber; i++) {
             int cpuTime = random.nextInt(1,maxCpuTime+1);
             curTime = curTime + random.nextInt(maxDeltaTime);
+
             int cpuId = random.nextInt(COMPUTER.processorsNumber);
             processes.add(new Process(i, cpuId, cpuTime, curTime, SIZE));
         }

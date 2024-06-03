@@ -60,6 +60,18 @@ public class MANUAL extends FrameAllocationAlgorithm {
                     processFrames.add(frames.get(i));
                 }
             }
+/*
+            boolean flag=false;
+            for(Process p :processGroup){
+                for (int i = 0; i < triples.size(); i++) {
+                    if(triples.get(i).first.equals(p)){
+                        flag = true;
+                        break;
+                    }
+
+                }
+            }
+*/
 
             if (needsTriple) {
                 adjustFrameAllocation(processGroup, triples,frameToAllocate);
