@@ -22,7 +22,7 @@ public class ProcessProvider {
             int cpuTime = random.nextInt(1,maxCpuTime+1);
             curTime = curTime + random.nextInt(maxDeltaTime);
 
-            int cpuId = random.nextInt(COMPUTER.processorsNumber);
+            int cpuId = random.nextInt(SimulationParameters.PROCESSORS_NUMBER);
             processes.add(new Process(i, cpuId, cpuTime, curTime, SIZE));
         }
     }

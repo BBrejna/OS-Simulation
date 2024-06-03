@@ -18,6 +18,7 @@ public class COMPUTER {
     //frame allocation
     public static RamScheduler ramSch;
 
+    public static int finishedProcesses=0;
     public static int processorsNumber;
     public static int curTime=0;
     public static ArrayList<ArrayList<Process>> activeList = new ArrayList<>();
@@ -60,7 +61,7 @@ public class COMPUTER {
     }
 
     public void doWork() {
-        while (!activeList.isEmpty() || provider.processesGenerated < provider.totalProcessesNumber) {
+        while (finishedProcesses < provider.processesGenerated || provider.processesGenerated < provider.totalProcessesNumber) {
             doStep();
             curTime++;
 //            System.out.println("Post "+curTime+" "+activeList.size()+" "+provider.processesGenerated+" "+provider.totalProcessesNumber);
@@ -87,6 +88,7 @@ public class COMPUTER {
     private void clearLists() {
         activeList.clear();
         finishedList.clear();
+        finishedProcesses=0;
     }
     public void restartTime() {
         clearLists();
@@ -94,6 +96,12 @@ public class COMPUTER {
         memSch.restartTime();
         ramSch.restartTime();
         curTime=0;
+    }
+
+    public static void finishProcess(Process p, Integer processorId) {
+        finishedList.get(processorId).add(p);
+        activeList.get(processorId).remove(p);
+        finishedProcesses++;
     }
 
     public void writeStats() {

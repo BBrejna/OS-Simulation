@@ -30,8 +30,7 @@ public class CpuScheduler {
             for (int i = 0; i < activeList.size(); i++) {
                 Process p = activeList.get(i);
                 if (p.isDone()) {
-                    finishedList.add(p);
-                    activeList.remove(i);
+                    COMPUTER.finishProcess(p, processorId);
                     i--;
                 }
             }
