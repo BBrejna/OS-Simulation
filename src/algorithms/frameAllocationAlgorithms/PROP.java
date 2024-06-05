@@ -19,9 +19,7 @@ public class PROP extends FrameAllocationAlgorithm {
 
         for (ArrayList<Process> processGroup : processesList) {
             int frameToAllocateForGroup = totalFrames / processesList.size();
-            int groupSize = processGroup.size();
 
-            // Distribute one frame to each process initially
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = new ArrayList<>();
                 frames.add(k);
@@ -31,7 +29,7 @@ public class PROP extends FrameAllocationAlgorithm {
                 processFrameMap.put(p, frames);
             }
 
-            // Calculate the total number of pages in the group
+
             int totalPagesInGroup = 0;
             for (Process process : processGroup) {
                 totalPagesInGroup += process.getPageCount();

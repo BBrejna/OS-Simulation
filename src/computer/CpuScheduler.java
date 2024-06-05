@@ -2,10 +2,14 @@ package computer;
 
 import java.util.*;
 
+import algorithms.balanceAlgorithms.BalanceAlgorithm;
+import algorithms.balanceAlgorithms.FIRST;
 import algorithms.cpuAlgorithms.CpuAlgorithm;
 
 public class CpuScheduler {
     public final CpuAlgorithm algorithm;
+    /*SOMETHING*/
+    private BalanceAlgorithm balanceAlgorithm = new FIRST();
 //    public final CpuBalanceAlgorithm balanceAlgorithm;
 
     public CpuScheduler(CpuAlgorithm algorithm) {
@@ -21,11 +25,10 @@ public class CpuScheduler {
 
         for (int processorId : randomPermutation) {
 
-//            balanceAlgorithm.balance(processorId);
+            balanceAlgorithm.balance(processorId);
 
             ArrayList<Process> activeList = COMPUTER.activeList.get(processorId);
             ArrayList<Process> finishedList = COMPUTER.finishedList.get(processorId);
-
 
             for (int i = 0; i < activeList.size(); i++) {
                 Process p = activeList.get(i);

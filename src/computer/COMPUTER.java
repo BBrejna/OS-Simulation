@@ -23,20 +23,32 @@ public class COMPUTER {
     public static int curTime=0;
     public static ArrayList<ArrayList<Process>> activeList = new ArrayList<>();
     public static ArrayList<ArrayList<Process>> finishedList = new ArrayList<>();
+
+
+
     public static ArrayList<Integer> memory = new ArrayList<>();
 
     //frame allocation
     public static ArrayList<Integer> frames = new ArrayList<>();
+
+    /*SOMETHING*/
+    public static ArrayList<ArrayList<Process>> waitingList = new ArrayList<>();
+
+
 
     public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch, RamScheduler ramSch) {
         COMPUTER.provider = provider;
         this.cpuSch = cpuSch;
         COMPUTER.memSch = memSch;
         COMPUTER.ramSch = ramSch;
+        COMPUTER.
         processorsNumber = SimulationParameters.PROCESSORS_NUMBER;
         for (int i = 0; i < processorsNumber; i++) {
             activeList.add(new ArrayList<>());
             finishedList.add(new ArrayList<>());
+
+            /*SOMETHING*/
+            waitingList.add(new ArrayList<>());
         }
 
         memory = new ArrayList<>();
@@ -82,13 +94,18 @@ public class COMPUTER {
     }
 
     public static void registerProcess(Process p, int processorId) {
-        activeList.get(processorId).add(p);
+        //activeList.get(processorId).add(p);
+
+        /*SOMETHING*/
+        waitingList.get(processorId).add(p);
     }
 
     private void clearLists() {
         activeList.clear();
         finishedList.clear();
         finishedProcesses=0;
+        /*SOMETHING*/
+        waitingList.clear();
     }
     public void restartTime() {
         clearLists();
