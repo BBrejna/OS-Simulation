@@ -43,12 +43,10 @@ public class MANUAL extends FrameAllocationAlgorithm {
 
             int remainingFrames = frameToAllocateForGroup;
 
-
             int totalPagesInGroup = 0;
             for (Process process : processGroup) {
                 totalPagesInGroup += process.getPageCount();
             }
-
 
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = processFrameMap.get(p);
@@ -60,10 +58,24 @@ public class MANUAL extends FrameAllocationAlgorithm {
             }
 
             if (needsTriple) {
-                adjustFrameAllocation(processGroup, triples, totalFrames - frameCounter);
+                boolean found = false;
+                for (Process process : processGroup) {
+                    for (Pair<Process, Integer> triple : triples) {
+                        if (triple.first.getId() == process.getId()) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found) {
+                        break;
+                    }
+                }
+
+                if (found) {
+                    adjustFrameAllocation(processGroup, triples, totalFrames - frameCounter);
+                }
             }
         }
-
 
         COMPUTER.ramSch.algorithm.resetAlgorithm();
     }
@@ -90,12 +102,12 @@ public class MANUAL extends FrameAllocationAlgorithm {
                 processFrames.add(frameCounter);
                 frameCounter++;
                 freeFrames--;
-               // System.out.println("plus");
+                // System.out.println("plus");
             } else if (ppf < lowerThreshold && processFrames.size() > 1) {
                 processFrames.remove(processFrames.size() - 1);
                 freeFrames++;
                 frameCounter--;
-               // System.out.println("minus");
+                // System.out.println("minus");
             }
         }
     }

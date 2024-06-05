@@ -131,4 +131,20 @@ public class FrameAllocator {
             }
         }
     }
+    public void restartTime() {
+        processListSecond = new ArrayList<>();
+        processPrevMap.clear();
+        needsRecalculation = false;
+        processesStats.clear();
+        processesStatsMap.clear();
+        tempTriple = null;
+        pageAccessMap.clear();
+        pageFaultsMap.clear();
+        zonalPageAccessMap.clear();
+        zonalCounter = 0;
+        needsTriple = false;
+        counter = 0;
+        firstRun = true;
+
+    }
 }

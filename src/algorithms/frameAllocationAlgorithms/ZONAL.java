@@ -14,15 +14,16 @@ public class ZONAL extends FrameAllocationAlgorithm {
     int frameCounter;
     @Override
     public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple) {
-        //ArrayList<Process> processesList = COMPUTER.activeList;
         ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
         COMPUTER.ramSch.processFrameMap.clear();
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
         int k = 0;
+
         for (ArrayList<Process> processGroup : processesList) {
-            int frameToAllocateForGroup = totalFrames/processesList.size();
+            int frameToAllocateForGroup = totalFrames / processesList.size();
             int processesNum = processGroup.size();
             if (processesNum == 0) continue;
+
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = new ArrayList<>();
                 frames.add(k);
@@ -41,7 +42,6 @@ public class ZONAL extends FrameAllocationAlgorithm {
             Collections.sort(Triples, Comparator.comparing(t -> t.first.getId()));
 
             if (totalWSS <= frameToAllocateForGroup) {
-                // System.out.println("TUuu:");
                 int triplesIndex = 0;
                 for (Process process : processGroup) {
                     if (triplesIndex < Triples.size() && Triples.get(triplesIndex).first.equals(process)) {
@@ -49,7 +49,6 @@ public class ZONAL extends FrameAllocationAlgorithm {
                         for (int i = 0; i < allocate; i++) {
                             processFrameMap.get(process).add(frameCounter);
                             frameCounter++;
-/*                            System.out.println("xd");*/
                         }
                         triplesIndex++;
                     }
@@ -70,19 +69,28 @@ public class ZONAL extends FrameAllocationAlgorithm {
                     processFrameMap.put(maxWSSProcess, keepOneFrame);
                 }
 
+                int remainingProcesses = processGroup.size() - 1;
                 for (Process process : processGroup) {
                     if (!process.equals(maxWSSProcess)) {
-                        int allocate = frameToAllocateForGroup / (processGroup.size() - 1);
+                        int allocate = frameToAllocateForGroup / remainingProcesses;
                         ArrayList<Integer> frames = processFrameMap.getOrDefault(process, new ArrayList<>());
                         for (int i = 0; i < allocate; i++) {
                             if (frameToAllocateForGroup > 0) {
                                 frames.add(frameCounter);
                                 frameCounter++;
-/*                                System.out.println("xddd");*/
                                 frameToAllocateForGroup--;
                             }
                         }
                         processFrameMap.put(process, frames);
+                    }
+                }
+
+
+                for (Process process : processGroup) {
+                    if (processFrameMap.get(process).isEmpty()) {
+                        System.out.println("x");
+                        processFrameMap.get(process).add(frameCounter);
+                        frameCounter++;
                     }
                 }
             }

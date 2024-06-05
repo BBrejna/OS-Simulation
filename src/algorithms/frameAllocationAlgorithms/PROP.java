@@ -6,17 +6,18 @@ import tools.Pair;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class PROP extends FrameAllocationAlgorithm {
 
 
+    private static final Logger LOGGER = Logger.getLogger(PROP.class.getName());
+
     @Override
-    public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple){
+    public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple) {
         ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
-
         int k = 0;
-
         for (ArrayList<Process> processGroup : processesList) {
             int frameToAllocateForGroup = totalFrames / processesList.size();
 
@@ -29,7 +30,6 @@ public class PROP extends FrameAllocationAlgorithm {
                 processFrameMap.put(p, frames);
             }
 
-
             int totalPagesInGroup = 0;
             for (Process process : processGroup) {
                 totalPagesInGroup += process.getPageCount();
@@ -38,7 +38,7 @@ public class PROP extends FrameAllocationAlgorithm {
             int frameCounter = k;
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = processFrameMap.get(p);
-                int additionalFrames = (int) Math.round((double) frameToAllocateForGroup * p.getPageCount() / totalPagesInGroup);
+                int additionalFrames = (int) ((double) frameToAllocateForGroup * p.getPageCount() / totalPagesInGroup);
                 for (int i = 0; i < additionalFrames; i++) {
                     frames.add(frameCounter);
                     frameCounter++;
@@ -46,7 +46,12 @@ public class PROP extends FrameAllocationAlgorithm {
             }
         }
 
-        COMPUTER.ramSch.algorithm.resetAlgorithm();
+        try {
+            COMPUTER.ramSch.algorithm.resetAlgorithm();
+        } catch (Exception e) {
+            LOGGER.severe("Failed to reset algorithm: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 }
