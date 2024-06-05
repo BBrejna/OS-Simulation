@@ -21,5 +21,18 @@ public abstract class   BalanceAlgorithm {
         }
     }
 
+    public void removeProcessFromProcessor(int processorId, Process process) {
+        COMPUTER.activeList.get(processorId).remove(process);
+        COMPUTER.cpuLoad.set(processorId, COMPUTER.cpuLoad.get(processorId) - process.loadOnProcessor);
+    }
+    public void assignProcessToProcessor(int processorId, Process process) {
+        COMPUTER.activeList.get(processorId).add(process);
+        COMPUTER.cpuLoad.set(processorId, COMPUTER.cpuLoad.get(processorId) + process.loadOnProcessor);
+    }
+
+    public double getProcessorLoad(int processorId) {
+        return COMPUTER.cpuLoad.get(processorId);
+    }
+
     public abstract void handleNewProcess(int processorId, Process process);
 }

@@ -10,7 +10,7 @@ import java.util.*;
 public class Process {
     private int id;
     private final int cpuId;
-    private double loadOnProcessor;
+    public double loadOnProcessor;
     private int cpuTime;
     private int arrivalTime;
     private int remainingTime;

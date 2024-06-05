@@ -33,6 +33,7 @@ public class COMPUTER {
 
     /*SOMETHING*/
     public static ArrayList<ArrayList<Process>> waitingList = new ArrayList<>();
+    public static ArrayList<Double> cpuLoad = new ArrayList<>();
 
 
 
@@ -42,13 +43,17 @@ public class COMPUTER {
         COMPUTER.memSch = memSch;
         COMPUTER.ramSch = ramSch;
         processorsNumber = SimulationParameters.PROCESSORS_NUMBER;
+
+        cpuLoad = new ArrayList<>();
         for (int i = 0; i < processorsNumber; i++) {
             activeList.add(new ArrayList<>());
             finishedList.add(new ArrayList<>());
 
             /*SOMETHING*/
             waitingList.add(new ArrayList<>());
+            cpuLoad.add(0.);
         }
+
 
         memory = new ArrayList<>();
         int SIZE = memSch.SIZE;
