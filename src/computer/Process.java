@@ -10,6 +10,7 @@ import java.util.*;
 public class Process {
     private int id;
     private final int cpuId;
+    private double loadOnProcessor;
     private int cpuTime;
     private int arrivalTime;
     private int remainingTime;
@@ -31,8 +32,10 @@ public class Process {
         finishTime=(cpuTime == 0 ? arrivalTime : -1);
     }
 
-    void generateRequests(int SIZE) {
+    void generateDetails(int SIZE) {
         Random random = new Random();
+
+        loadOnProcessor = random.nextDouble(SimulationParameters.MIN_PROCESS_LOAD_ON_PROCESSOR, SimulationParameters.MAX_PROCESS_LOAD_ON_PROCESSOR);
 
         pageCount = 1+random.nextInt(2, SimulationParameters.MAX_PROCESS_PAGE_NUMBER);
         int localityFactor = pageCount / 2;
@@ -67,7 +70,7 @@ public class Process {
         this.remainingTime = cpuTime;
         this.arrivalTime = arrivalTime;
         this.finishTime = (cpuTime == 0 ? arrivalTime : -1);
-        generateRequests(SIZE);
+        generateDetails(SIZE);
     }
 
     public int getCpuId() {
