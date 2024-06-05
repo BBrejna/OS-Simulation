@@ -126,6 +126,7 @@ public class COMPUTER {
     }
 
     public void writeStats() {
+        String balanceAlgoName = cpuSch.balanceAlgorithm.getClass().getSimpleName();
         String cpuAlgoName = cpuSch.algorithm.getClass().getSimpleName();
         String memAlgoName = memSch.algorithm.getClass().getSimpleName();
         if (memSch.algorithm.MODE == 1) memAlgoName += " + edf";
@@ -169,6 +170,6 @@ public class COMPUTER {
 //        System.out.println("HDD steps done: " + COMPUTER.memSch.algorithm.getSteps());
 //        System.out.println("HDD rejected priority: " + COMPUTER.memSch.algorithm.getRejected());
 
-        StatisticsHandler.registerInstance(new InstanceInfo(processesNumber, COMPUTER.curTime, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
+        StatisticsHandler.registerInstance(new InstanceInfo(processesNumber, COMPUTER.curTime, balanceAlgoName, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
     }
 }

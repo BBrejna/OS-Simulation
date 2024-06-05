@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         ProcessProvider pp = new ProcessProvider();
 
-        BalanceAlgorithm[] balanceAlgorithms = new BalanceAlgorithm[]{new FIRST()};
+        BalanceAlgorithm[] balanceAlgorithms = new BalanceAlgorithm[]{new FIRST(), new THIRD()};
         CpuAlgorithm[] cpuAlgorithms = new CpuAlgorithm[]{new algorithms.cpuAlgorithms.FCFS(), new RR(), new SJF(), new SRTF()};
         MemAlgorithm[] memAlgorithms = new MemAlgorithm[]{
 //                new algorithms.memAlgorithms.FCFS(memSize, 0), new SSTF(memSize, 0), new SCAN(memSize, 0), new CSCAN(memSize, 0),

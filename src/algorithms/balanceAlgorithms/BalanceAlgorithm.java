@@ -6,7 +6,7 @@ import simulation.SimulationParameters;
 
 import java.util.ArrayList;
 
-public abstract class   BalanceAlgorithm {
+public abstract class BalanceAlgorithm {
     protected int totalProcessors;
 
     public BalanceAlgorithm() {
@@ -28,6 +28,11 @@ public abstract class   BalanceAlgorithm {
     public void assignProcessToProcessor(int processorId, Process process) {
         COMPUTER.activeList.get(processorId).add(process);
         COMPUTER.cpuLoad.set(processorId, COMPUTER.cpuLoad.get(processorId) + process.loadOnProcessor);
+    }
+    public void migrateRandomProcess(int sourceProcessorId, int destinationProcessorId) {
+        Process process = COMPUTER.activeList.get(sourceProcessorId).getLast();
+        removeProcessFromProcessor(sourceProcessorId, process);
+        assignProcessToProcessor(destinationProcessorId, process);
     }
 
     public double getProcessorLoad(int processorId) {

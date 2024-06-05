@@ -18,8 +18,37 @@ public class THIRD extends BalanceAlgorithm {
             notSearchedProcessors.add(i);
         }
 
-        if (getProcessorLoad(processorId) <= p) {
+//        System.out.println("BALANCING "+processorId+" AFTER "+process.getId());
+//        System.out.println("MY LOAD: "+getProcessorLoad(processorId));
 
+        if (getProcessorLoad(processorId) <= p) {
+            assignProcessToProcessor(processorId, process);
+
+//            System.out.println("MY LOAD: "+getProcessorLoad(processorId));
+
+            if (getProcessorLoad(processorId) <= r) {
+                java.util.Collections.shuffle(notSearchedProcessors);
+
+                for (int loadedProcessorId : notSearchedProcessors) {
+//                    System.out.println(getProcessorLoad(loadedProcessorId)+" "+getProcessorLoad(processorId));
+                    while (getProcessorLoad(loadedProcessorId) > p && getProcessorLoad(processorId) <= p/2) {
+                        migrateRandomProcess(loadedProcessorId, processorId);
+                    }
+                }
+
+            }
+            return;
         }
+
+        java.util.Collections.shuffle(notSearchedProcessors);
+        int destinationProcessor = processorId;
+        for (int loadedProcessor : notSearchedProcessors) {
+            if (getProcessorLoad(loadedProcessor) <= p) {
+                destinationProcessor = loadedProcessor;
+                break;
+            }
+        }
+
+        assignProcessToProcessor(destinationProcessor, process);
     }
 }

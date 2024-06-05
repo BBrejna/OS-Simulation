@@ -3,6 +3,7 @@ package statistics;
 public class InstanceInfo {
     int processesNumber;
     int cyclesDone;
+    String balancerAlgo;
     String cpuAlgo;
     String memAlgo;
     String ramAlgo;
@@ -13,9 +14,10 @@ public class InstanceInfo {
     int memRejected;
     int ramPageErrors;
 
-    public InstanceInfo(int processesNumber, int cyclesDone, String cpuAlgo, String memAlgo, String ramAlgo, String frameAlgo, double avgTurnaround, double avgWaitTime, int memStepsDone, int memRejected, int ramPageErrors) {
+    public InstanceInfo(int processesNumber, int cyclesDone, String balancerAlgo, String cpuAlgo, String memAlgo, String ramAlgo, String frameAlgo, double avgTurnaround, double avgWaitTime, int memStepsDone, int memRejected, int ramPageErrors) {
         this.processesNumber = processesNumber;
         this.cyclesDone = cyclesDone;
+        this.balancerAlgo = balancerAlgo;
         this.cpuAlgo = cpuAlgo;
         this.memAlgo = memAlgo;
         this.ramAlgo = ramAlgo;
@@ -34,13 +36,15 @@ public class InstanceInfo {
 
         if (StatisticsHandler.maxAvgWaitTime != 0) {
             waitTimeContribution = avgWaitTime/StatisticsHandler.maxAvgWaitTime*0.7;
-        }
+        } else waitTimeContribution = 0.7;
+
         if (StatisticsHandler.maxRejectedMemRequests != 0) {
             memRejectedContribution = 1.*memRejected/StatisticsHandler.maxRejectedMemRequests*0.1;
-        }
+        } else memRejectedContribution = 0.1;
+
         if (StatisticsHandler.maxNoPageErrors != 0) {
             ramPageErrorsContribution = 1.*ramPageErrors/StatisticsHandler.maxNoPageErrors*0.2;
-        }
+        } else ramPageErrorsContribution = 0.2;
 
         return waitTimeContribution+memRejectedContribution+ramPageErrorsContribution;
     }
