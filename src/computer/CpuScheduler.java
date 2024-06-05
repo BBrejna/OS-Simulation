@@ -8,12 +8,11 @@ import algorithms.cpuAlgorithms.CpuAlgorithm;
 
 public class CpuScheduler {
     public final CpuAlgorithm algorithm;
-    /*SOMETHING*/
-    private BalanceAlgorithm balanceAlgorithm = new FIRST();
-//    public final CpuBalanceAlgorithm balanceAlgorithm;
+    public final BalanceAlgorithm balanceAlgorithm;
 
-    public CpuScheduler(CpuAlgorithm algorithm) {
+    public CpuScheduler(CpuAlgorithm algorithm, BalanceAlgorithm balanceAlgorithm) {
         this.algorithm=algorithm;
+        this.balanceAlgorithm = balanceAlgorithm;
     }
 
     public void doStep() {

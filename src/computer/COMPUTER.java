@@ -41,7 +41,6 @@ public class COMPUTER {
         this.cpuSch = cpuSch;
         COMPUTER.memSch = memSch;
         COMPUTER.ramSch = ramSch;
-        COMPUTER.
         processorsNumber = SimulationParameters.PROCESSORS_NUMBER;
         for (int i = 0; i < processorsNumber; i++) {
             activeList.add(new ArrayList<>());

@@ -1,3 +1,5 @@
+import algorithms.balanceAlgorithms.BalanceAlgorithm;
+import algorithms.balanceAlgorithms.FIRST;
 import algorithms.cpuAlgorithms.CpuAlgorithm;
 import algorithms.cpuAlgorithms.RR;
 import algorithms.cpuAlgorithms.SJF;
@@ -20,10 +22,11 @@ public class MainTask4 {
         public static void main(String[] args) {
             ProcessProvider pp = new ProcessProvider();
 
+            BalanceAlgorithm balanceAlgorithm = new FIRST();
             CpuAlgorithm cpuAlgo = new SRTF();
             MemAlgorithm memAlgo = new CSCAN(2);
             RamAlgorithm ramAlgo = new LRU();
-            FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),/*new MANUAL(),new ZONAL()*/};
+            FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),new MANUAL(),new ZONAL()};
 
             int numOfCombinations = frameAllocationAlgorithms.length;
             int iterator=0;
@@ -31,7 +34,7 @@ public class MainTask4 {
             Instant start = Instant.now();
 
             for (FrameAllocationAlgorithm frameAlgo : frameAllocationAlgorithms) {
-                CpuScheduler cpuSch = new CpuScheduler(cpuAlgo);
+                CpuScheduler cpuSch = new CpuScheduler(cpuAlgo, balanceAlgorithm);
                 MemScheduler memSch = new MemScheduler(memAlgo);
                 FrameAllocator frameAllocator = new FrameAllocator(frameAlgo);
 
