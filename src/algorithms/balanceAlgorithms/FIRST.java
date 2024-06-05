@@ -7,12 +7,7 @@ import java.util.ArrayList;
 
 public class FIRST extends BalanceAlgorithm {
     @Override
-    public void balance(int processorId) {
-        ArrayList<Process> waitingList = COMPUTER.waitingList.get(processorId);
-        ArrayList<Process> activeList = COMPUTER.activeList.get(processorId);
-        while (!waitingList.isEmpty()) {
-            Process process = waitingList.remove(0);
-            activeList.add(process);
-        }
+    public void handleNewProcess(int processorId, Process process) {
+        COMPUTER.activeList.get(processorId).add(process);
     }
 }
