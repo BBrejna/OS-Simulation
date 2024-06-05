@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class RamAlgorithm {
-    RamTask nextTask;
+    ArrayList<RamTask> nextTask = new ArrayList<>();
     int resultCounter;
     ArrayList<Integer> frames;
 
@@ -18,29 +18,29 @@ public abstract class RamAlgorithm {
 
     public void restartTime() {
         resultCounter = 0;
-        nextTask = null;
+        nextTask = new ArrayList<>();
         frames = null;
     }
 
     public void registerTask(Process p, int page) {
-        nextTask = new RamTask(p, page);
+        nextTask.add(new RamTask(p, page));
     }
 
     public void answer() {
-        if (nextTask == null) return;
-        RamTask curTask = nextTask;
+        for (RamTask curTask : nextTask) {
 
-        frames = COMPUTER.ramSch.processFrameMap.get(curTask.p);
+            frames = COMPUTER.ramSch.processFrameMap.get(curTask.p);
 
-        nextTask = null;
-        COMPUTER.ramSch.getFrameAllocator().registerAnsweredRequest(curTask.p, curTask.pageNumber, COMPUTER.curTime);
-        try {
-            normalRun(curTask);
-        } catch (Exception e) {
-            System.out.println("ERROR CAUGHT IN RAM ALGORITHM "+curTask.p.getId()+" "+frames+" "+checkPage(curTask)+" "+checkUsed()+" "+checkSize(curTask.p));
-            throw e;
+            COMPUTER.ramSch.getFrameAllocator().registerAnsweredRequest(curTask.p, curTask.pageNumber, COMPUTER.curTime);
+            try {
+                normalRun(curTask);
+            } catch (Exception e) {
+                System.out.println("ERROR CAUGHT IN RAM ALGORITHM " + curTask.p.getId() + " " + frames + " " + checkPage(curTask) + " " + checkUsed() + " " + checkSize(curTask.p));
+                throw e;
+            }
+            COMPUTER.ramAnswer(curTask.p, curTask.pageNumber);
         }
-        COMPUTER.ramAnswer(curTask.p, curTask.pageNumber);
+        nextTask.clear();
     };
 
     public int checkPage(RamTask t) {

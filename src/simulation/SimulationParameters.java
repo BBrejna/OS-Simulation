@@ -1,7 +1,7 @@
 package simulation;
 
 public class SimulationParameters {
-    public static int PROCESSORS_NUMBER = 1;
+    public static int PROCESSORS_NUMBER = 2;
     public static int PROCESSES_NUMBER = 1000;
     public static int MAX_PROCESS_CPU_TIME = 30;
     public static int MAX_PROCESS_DELTA_TIME = 15;

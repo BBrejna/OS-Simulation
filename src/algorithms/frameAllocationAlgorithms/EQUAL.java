@@ -17,7 +17,7 @@ public class EQUAL extends FrameAllocationAlgorithm {
         int frameCounter = 0;
         for (ArrayList<Process> processGroup : processesList) {
             int processesNum = processGroup.size();
-            if (processesNum == 0) return;
+            if (processesNum == 0) continue;
             int frameToAllocate = totalFrames/processesList.size() / processesNum; // tu totalFrames trzeba zmienic
             for (Process p : processGroup) {
                     ArrayList<Integer> frames = new ArrayList<>();
