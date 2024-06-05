@@ -126,6 +126,7 @@ public class COMPUTER {
         finishedList.get(processorId).add(p);
         activeList.get(processorId).remove(p);
         finishedProcesses++;
+        cpuLoad.set(processorId, cpuLoad.get(processorId)-p.loadOnProcessor);
     }
 
     public void writeStats() {
