@@ -22,12 +22,11 @@ public class ZONAL extends FrameAllocationAlgorithm {
         for (ArrayList<Process> processGroup : processesList) {
             int frameToAllocateForGroup = totalFrames/processesList.size();
             int processesNum = processGroup.size();
-            if (processesNum == 0) return;
+            if (processesNum == 0) continue;
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = new ArrayList<>();
                 frames.add(k);
                 k++;
-
                 frameToAllocateForGroup--;
                 processFrameMap.put(p, frames);
             }
@@ -50,6 +49,7 @@ public class ZONAL extends FrameAllocationAlgorithm {
                         for (int i = 0; i < allocate; i++) {
                             processFrameMap.get(process).add(frameCounter);
                             frameCounter++;
+/*                            System.out.println("xd");*/
                         }
                         triplesIndex++;
                     }
@@ -78,6 +78,7 @@ public class ZONAL extends FrameAllocationAlgorithm {
                             if (frameToAllocateForGroup > 0) {
                                 frames.add(frameCounter);
                                 frameCounter++;
+/*                                System.out.println("xddd");*/
                                 frameToAllocateForGroup--;
                             }
                         }

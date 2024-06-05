@@ -14,9 +14,14 @@ public class PROP extends FrameAllocationAlgorithm {
     public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple){
         ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
-        int k =0;
+
+        int k = 0;
+
         for (ArrayList<Process> processGroup : processesList) {
-            int frameToAllocateForGroup = totalFrames/processesList.size();
+            int frameToAllocateForGroup = totalFrames / processesList.size();
+            int groupSize = processGroup.size();
+
+            // Distribute one frame to each process initially
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = new ArrayList<>();
                 frames.add(k);
@@ -26,28 +31,24 @@ public class PROP extends FrameAllocationAlgorithm {
                 processFrameMap.put(p, frames);
             }
 
-            int pages = 0;
-
+            // Calculate the total number of pages in the group
+            int totalPagesInGroup = 0;
             for (Process process : processGroup) {
-                pages += process.getPageCount();
+                totalPagesInGroup += process.getPageCount();
             }
+
             int frameCounter = k;
             for (Process p : processGroup) {
-                ArrayList<Integer> frames = new ArrayList<>();
-                int framesToAllocate = (frameToAllocateForGroup * (p.getPageCount() / pages));
-                // System.out.println("dr: "+framesToAllocate);
-                for (int i = 0; i < framesToAllocate; i++) {
-                    //System.out.println("zssd: "+frameCounter);
+                ArrayList<Integer> frames = processFrameMap.get(p);
+                int additionalFrames = (int) Math.round((double) frameToAllocateForGroup * p.getPageCount() / totalPagesInGroup);
+                for (int i = 0; i < additionalFrames; i++) {
                     frames.add(frameCounter);
                     frameCounter++;
-                }
-                // processFrameMap.remove(p);
-                for (int i = 0; i < frames.size(); i++) {
-                    processFrameMap.get(p).add(frames.get(i));
                 }
             }
         }
 
         COMPUTER.ramSch.algorithm.resetAlgorithm();
     }
+
 }
