@@ -16,6 +16,7 @@ public class AppLRU extends RamAlgorithm {
         int possibleFrame = checkPage(curTask);
         if (possibleFrame != -1) {
             referenceBitMap.get(curTask.p).put(possibleFrame, true);
+            if (!appLruDelQueue.get(curTask.p).contains(possibleFrame)) appLruDelQueue.get(curTask.p).add(possibleFrame);
             return;
         }
         if (checkUsed() < checkSize(curTask.p)) {
@@ -27,7 +28,7 @@ public class AppLRU extends RamAlgorithm {
         }
 
         Integer toDel = null;
-        while (true) {
+        while (!appLruDelQueue.get(curTask.p).isEmpty()) {
             toDel = appLruDelQueue.get(curTask.p).poll();
             if (referenceBitMap.get(curTask.p).get(toDel)) {
                 referenceBitMap.get(curTask.p).put(toDel, false);
