@@ -30,8 +30,10 @@ public class MANUAL extends FrameAllocationAlgorithm {
         for (ArrayList<Process> processGroup : processesList) {
             int frameToAllocateForGroup = totalFrames / processesList.size();
             max /= processesList.size();
+/*
             int processesNum = processGroup.size();
             if (processesNum == 0) continue;
+*/
 
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = new ArrayList<>();

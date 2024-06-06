@@ -29,6 +29,7 @@ public class InstanceInfo {
         this.ramPageErrors = ramPageErrors;
     }
 
+
     public double getScore() {
         double waitTimeContribution = 0;
         double memRejectedContribution = 0;

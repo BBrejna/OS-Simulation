@@ -14,20 +14,23 @@ public class EQUAL extends FrameAllocationAlgorithm {
         ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
         COMPUTER.ramSch.processFrameMap.clear();
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
+
         int frameCounter = 0;
+
         for (ArrayList<Process> processGroup : processesList) {
             int processesNum = processGroup.size();
             if (processesNum == 0) continue;
-            int frameToAllocate = totalFrames/processesList.size() / processesNum; // tu totalFrames trzeba zmienic
+            int frameToAllocate = (totalFrames / processesList.size())/processGroup.size();
             for (Process p : processGroup) {
-                    ArrayList<Integer> frames = new ArrayList<>();
-                    for (int i = 0; i < frameToAllocate-1; i++) {
-                        frames.add(frameCounter);
-                        frameCounter++;
-                    }
-                    processFrameMap.put(p, frames);
+                ArrayList<Integer> frames = new ArrayList<>();
+                for (int i = 0; i < frameToAllocate; i++) {
+                    frames.add(frameCounter);
+                    frameCounter++;
                 }
+                processFrameMap.put(p, frames);
+            }
         }
         COMPUTER.ramSch.algorithm.resetAlgorithm();
+
     }
 }

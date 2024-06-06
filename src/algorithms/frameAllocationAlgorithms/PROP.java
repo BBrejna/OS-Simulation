@@ -10,48 +10,53 @@ import java.util.logging.Logger;
 
 public class PROP extends FrameAllocationAlgorithm {
 
-
     private static final Logger LOGGER = Logger.getLogger(PROP.class.getName());
 
     @Override
     public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple) {
         ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
-        int k = 0;
+        int usedFrames = 0;
         for (ArrayList<Process> processGroup : processesList) {
-            int frameToAllocateForGroup = totalFrames / processesList.size();
-
-            for (Process p : processGroup) {
-                ArrayList<Integer> frames = new ArrayList<>();
-                frames.add(k);
-                k++;
-                frameToAllocateForGroup--;
-                processFrameMap.remove(p);
-                processFrameMap.put(p, frames);
-            }
-
+            int framesForGroup = totalFrames / processesList.size();
             int totalPagesInGroup = 0;
+
             for (Process process : processGroup) {
                 totalPagesInGroup += process.getPageCount();
             }
 
-            int frameCounter = k;
-            for (Process p : processGroup) {
-                ArrayList<Integer> frames = processFrameMap.get(p);
-                int additionalFrames = (int) ((double) frameToAllocateForGroup * p.getPageCount() / totalPagesInGroup);
+            for (Process process : processGroup) {
+                ArrayList<Integer> frames = processFrameMap.getOrDefault(process, new ArrayList<>());
+
+                if (usedFrames < totalFrames) {
+                    frames.add(usedFrames);
+                    usedFrames++;
+                } else {
+                    LOGGER.warning("Not enough frames to allocate for all processes.");
+                    break;
+                }
+
+                processFrameMap.put(process, frames);
+                framesForGroup--;
+            }
+
+
+            for (Process process : processGroup) {
+                ArrayList<Integer> frames = processFrameMap.get(process);
+                int additionalFrames = (framesForGroup * process.getPageCount()) / totalPagesInGroup;
+
                 for (int i = 0; i < additionalFrames; i++) {
-                    frames.add(frameCounter);
-                    frameCounter++;
+                    if (usedFrames < totalFrames) {
+                        frames.add(usedFrames);
+                        usedFrames++;
+                    } else {
+                        LOGGER.warning("Not enough frames to allocate for all processes.");
+                        break;
+                    }
                 }
             }
         }
+        COMPUTER.ramSch.algorithm.resetAlgorithm();
 
-        try {
-            COMPUTER.ramSch.algorithm.resetAlgorithm();
-        } catch (Exception e) {
-            LOGGER.severe("Failed to reset algorithm: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
-
 }

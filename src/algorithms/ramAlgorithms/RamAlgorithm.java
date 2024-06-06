@@ -30,6 +30,7 @@ public abstract class RamAlgorithm {
         for (RamTask curTask : nextTask) {
 
             frames = COMPUTER.ramSch.processFrameMap.get(curTask.p);
+            System.out.println(curTask.p.getId()+" "+" "+frames);
 
             COMPUTER.ramSch.getFrameAllocator().registerAnsweredRequest(curTask.p, curTask.pageNumber, COMPUTER.curTime);
             try {

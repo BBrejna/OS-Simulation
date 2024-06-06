@@ -21,6 +21,7 @@ public class RamScheduler {
 
     public void restartTime() {
         algorithm.restartTime();
+
     }
 
     // registerTask

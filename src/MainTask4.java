@@ -26,6 +26,7 @@ public class MainTask4 {
             CpuAlgorithm cpuAlgo = new SRTF();
             MemAlgorithm memAlgo = new CSCAN(2);
             RamAlgorithm ramAlgo = new LRU();
+
             FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),new MANUAL(),new ZONAL()};
 
             int numOfCombinations = balanceAlgorithms.length * frameAllocationAlgorithms.length;

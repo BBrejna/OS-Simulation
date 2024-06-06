@@ -14,7 +14,6 @@ public class COMPUTER {
     public static ProcessProvider provider;
     private final CpuScheduler cpuSch;
     private static MemScheduler memSch;
-    private static FrameAllocator frmAll;
 
     //frame allocation
     public static RamScheduler ramSch;
@@ -38,12 +37,11 @@ public class COMPUTER {
 
 
 
-    public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch, RamScheduler ramSch,FrameAllocator frmAll) {
+    public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch, RamScheduler ramSch) {
         COMPUTER.provider = provider;
         this.cpuSch = cpuSch;
         COMPUTER.memSch = memSch;
         COMPUTER.ramSch = ramSch;
-        COMPUTER.frmAll = frmAll;
         processorsNumber = SimulationParameters.PROCESSORS_NUMBER;
 
         cpuLoad = new ArrayList<>();
@@ -118,7 +116,6 @@ public class COMPUTER {
         provider.restartTime();
         memSch.restartTime();
         ramSch.restartTime();
-        frmAll.restartTime();
         curTime=0;
     }
 
