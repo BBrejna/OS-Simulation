@@ -22,7 +22,7 @@ public class Main {
                 new algorithms.memAlgorithms.FCFS(1), new SSTF(1), new SCAN(1), new CSCAN(1),
                 new algorithms.memAlgorithms.FCFS(2), new SSTF(2), new SCAN(2), new CSCAN(2)};
         RamAlgorithm[] ramAlgorithms = new RamAlgorithm[]{new FIFO(), new RAND(), new LRU(), new AppLRU()};
-        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),new MANUAL(),new ZONAL()};
+        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),new MANUAL()/*,new ZONAL()*/};
 
         int numOfCombinations = balanceAlgorithms.length * cpuAlgorithms.length * memAlgorithms.length * ramAlgorithms.length * frameAllocationAlgorithms.length;
         int iterator=0;
@@ -42,16 +42,16 @@ public class Main {
 
                             COMPUTER computer = new COMPUTER(pp, cpuSch, memSch, ramSch);
 //                System.out.println("pre-work");
+                            System.out.println("COMPUTER CONFIG.: ");
+                            System.out.println("\tBALANCE: " + balanceAlgo.getClass().getSimpleName());
+                            System.out.println("\tCPU: " + cpuAlgo.getClass().getSimpleName());
+                            System.out.println("\tMEM: " + memAlgo.getClass().getSimpleName());
+                            System.out.println("\tRAM: " + ramAlgo.getClass().getSimpleName());
+                            System.out.println("\tFRAMES: " + frameAlgo.getClass().getSimpleName());
                             try {
                                 computer.doWork();
                             } catch (Exception e) {
                                 System.out.println("NEW EXCEPTION IN COMPUTER WORK");
-                                System.out.println("COMPUTER CONFIG.: ");
-                                System.out.println("\tBALANCE: " + balanceAlgo.getClass().getSimpleName());
-                                System.out.println("\tCPU: " + cpuAlgo.getClass().getSimpleName());
-                                System.out.println("\tMEM: " + memAlgo.getClass().getSimpleName());
-                                System.out.println("\tRAM: " + ramAlgo.getClass().getSimpleName());
-                                System.out.println("\tFRAMES: " + frameAlgo.getClass().getSimpleName());
                                 throw e;
                             }
 

@@ -16,6 +16,8 @@ public class PROP extends FrameAllocationAlgorithm {
     public void allocateFrames(ArrayList<Pair<Process, Integer>> Triples, boolean needsTriple) {
         ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
+        processFrameMap.clear();
+
         int usedFrames = 0;
         for (ArrayList<Process> processGroup : processesList) {
             int framesForGroup = totalFrames / processesList.size();
@@ -26,7 +28,7 @@ public class PROP extends FrameAllocationAlgorithm {
             }
 
             for (Process process : processGroup) {
-                ArrayList<Integer> frames = processFrameMap.getOrDefault(process, new ArrayList<>());
+                ArrayList<Integer> frames = new ArrayList<>();
 
                 if (usedFrames < totalFrames) {
                     frames.add(usedFrames);
