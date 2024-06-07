@@ -22,7 +22,7 @@ public class Main {
                 new algorithms.memAlgorithms.FCFS(1), new SSTF(1), new SCAN(1), new CSCAN(1),
                 new algorithms.memAlgorithms.FCFS(2), new SSTF(2), new SCAN(2), new CSCAN(2)};
         RamAlgorithm[] ramAlgorithms = new RamAlgorithm[]{new FIFO(), new RAND(), new LRU(), new AppLRU()};
-        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),new MANUAL()/*,new ZONAL()*/};
+        FrameAllocationAlgorithm[] frameAllocationAlgorithms = new FrameAllocationAlgorithm[]{new EQUAL(),new PROP(),new MANUAL(),new ZONAL(),new MANUAL()};
 
         int numOfCombinations = balanceAlgorithms.length * cpuAlgorithms.length * memAlgorithms.length * ramAlgorithms.length * frameAllocationAlgorithms.length;
         int iterator=0;

@@ -14,48 +14,36 @@ public class MANUAL extends FrameAllocationAlgorithm {
     double upperThreshold = 0.5;
     double lowerThreshold = 0.2;
     int frameCounter;
-    int max = totalFrames;
-    boolean first = true;
-    int last;
 
     @Override
     public void allocateFrames(ArrayList<Pair<Process, Integer>> triples, boolean needsTriple) {
+        //System.out.println("jeden");
         ArrayList<ArrayList<Process>> processesList = COMPUTER.activeList;
-        COMPUTER.ramSch.processFrameMap.clear();
-
-        int k = 0;
-        frameCounter = 0;
         Map<Process, ArrayList<Integer>> processFrameMap = COMPUTER.ramSch.processFrameMap;
-
+        COMPUTER.ramSch.processFrameMap.clear();
+        frameCounter = 0;
         for (ArrayList<Process> processGroup : processesList) {
             int frameToAllocateForGroup = totalFrames / processesList.size();
-            max /= processesList.size();
-/*
-            int processesNum = processGroup.size();
-            if (processesNum == 0) continue;
-*/
-
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = new ArrayList<>();
-                frames.add(k);
-                k++;
+                if (frameCounter < totalFrames) {
+                    frames.add(frameCounter);
+                    frameCounter++;
+                }
                 frameToAllocateForGroup--;
                 processFrameMap.put(p, frames);
             }
 
-            int remainingFrames = frameToAllocateForGroup;
-
-            int totalPagesInGroup = 0;
-            for (Process process : processGroup) {
-                totalPagesInGroup += process.getPageCount();
-            }
 
             for (Process p : processGroup) {
                 ArrayList<Integer> frames = processFrameMap.get(p);
-                int additionalFrames = (int) Math.round((double) remainingFrames * p.getPageCount() / totalPagesInGroup);
+                int additionalFrames = frameToAllocateForGroup / processGroup.size();
                 for (int i = 0; i < additionalFrames && frameCounter < totalFrames; i++) {
-                    frames.add(frameCounter);
-                    frameCounter++;
+                    if (frameToAllocateForGroup > 0) {
+                        frames.add(frameCounter);
+                        frameCounter++;
+                        frameToAllocateForGroup--;
+                    }
                 }
             }
 
@@ -74,7 +62,7 @@ public class MANUAL extends FrameAllocationAlgorithm {
                 }
 
                 if (found) {
-                    adjustFrameAllocation(processGroup, triples, totalFrames - frameCounter);
+                    adjustFrameAllocation(processGroup, triples, frameToAllocateForGroup);
                 }
             }
         }
@@ -83,33 +71,39 @@ public class MANUAL extends FrameAllocationAlgorithm {
     }
 
     private void adjustFrameAllocation(ArrayList<Process> processesList, ArrayList<Pair<Process, Integer>> triples, int freeFrames) {
-        for (Process p : processesList) {
-            int index = -1;
-            for (int j = 0; j < triples.size(); j++) {
-                if (triples.get(j).first.getId() == p.getId()) {
-                    index = j;
-                    break;
+        if (freeFrames > 0) {
+
+            for (Process p : processesList) {
+                int index = -1;
+                for (int j = 0; j < triples.size(); j++) {
+                    if (triples.get(j).first.getId() == p.getId()) {
+                        index = j;
+                        break;
+                    }
                 }
-            }
-            if (index == -1) {
-                continue;
-            }
+                if (index == -1) {
+                    continue;
+                }
 
-            Pair<Process, Integer> para = triples.get(index);
-            int pageFaults = para.second;
-            double ppf = (double) pageFaults / window;
-            ArrayList<Integer> processFrames = COMPUTER.ramSch.processFrameMap.get(p);
+                Pair<Process, Integer> para = triples.get(index);
+                int pageFaults = para.second;
+                double ppf = (double) pageFaults / window;
+                ArrayList<Integer> processFrames = COMPUTER.ramSch.processFrameMap.get(p);
 
-            if (ppf > upperThreshold && freeFrames > 0) {
-                processFrames.add(frameCounter);
-                frameCounter++;
-                freeFrames--;
-                // System.out.println("plus");
-            } else if (ppf < lowerThreshold && processFrames.size() > 1) {
-                processFrames.remove(processFrames.size() - 1);
-                freeFrames++;
-                frameCounter--;
-                // System.out.println("minus");
+                if (ppf > upperThreshold && freeFrames > 0 && frameCounter < totalFrames) {
+                    frameCounter++;
+                    processFrames.add(frameCounter);
+                     frameCounter++;
+
+                    freeFrames--;
+                    //System.out.println("si");
+
+                } else if (ppf < lowerThreshold && processFrames.size() > 1) {
+                    processFrames.removeFirst();
+                    freeFrames++;
+                    //System.out.println("si");
+
+                }
             }
         }
     }
