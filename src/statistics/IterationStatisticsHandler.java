@@ -3,7 +3,7 @@ package statistics;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class StatisticsHandler {
+public class IterationStatisticsHandler {
     public static double maxAvgWaitTime=0;
     public static int maxRejectedMemRequests=0;
     public static int maxNoPageErrors=0;
@@ -20,7 +20,7 @@ public class StatisticsHandler {
         checkMaxValues(info);
     }
 
-    public static void printStatistics() {
+    public static void printStatistics(Integer topInstances) {
         results.sort(Comparator.comparing(InstanceInfo::getScore));
 
         String separator = "-------------------------------------------------------------------------------------------------------------------------------------------------------%n";
@@ -28,8 +28,8 @@ public class StatisticsHandler {
         String format = "| %-8s | %-6s | %-15s | %-8s | %-8s | %5s | %7s | %9s | %9s | %9s | %4s | %7s | %9s | %4s |%n";
 
         System.out.printf(separator);
-        System.out.printf(" Project statistics %n");
-        System.out.printf(" Each possible combination %n");
+        System.out.printf(" Iteration statistics %n");
+        System.out.printf(" Top "+topInstances+" best combinations %n");
 
         System.out.printf(separator);
         System.out.printf(format, "BALANCER", "CPU", "MEM", "RAM", "FRAMES", "PROC.", "CYCLES", "TURNAR.", "WAIT T.", "HDD ST.", "REJ.", "NO PAGE", "SCORE", "RANK");
@@ -37,10 +37,22 @@ public class StatisticsHandler {
 
         int rank = 1;
         for (InstanceInfo info : results) {
+            if (rank > topInstances) break;
             System.out.printf(format, info.balancerAlgo, info.cpuAlgo, info.memAlgo, info.ramAlgo, info.frameAlgo, info.processesNumber, info.cyclesDone, String.format("%.1f", info.avgTurnaround), String.format("%.1f", info.avgWaitTime), info.memStepsDone, info.memRejected, info.ramPageErrors, String.format("%.4f", info.getScore()), rank++);
         }
 
         System.out.printf(separator);
 
+    }
+    public static void printStatistics() { printStatistics(results.size()); }
+
+    public static void flushIterationStatistics() {
+        for (InstanceInfo info : results) {
+            SimulationStatisticsHandler.registerInstance(new InstanceRecord(info.balancerAlgo, info.cpuAlgo, info.memAlgo, info.ramAlgo, info.frameAlgo), info.getScore());
+        }
+        maxAvgWaitTime = 0.;
+        maxRejectedMemRequests = 0;
+        maxNoPageErrors = 0;
+        results.clear();
     }
 }

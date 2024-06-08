@@ -1,18 +1,13 @@
 import algorithms.balanceAlgorithms.BalanceAlgorithm;
 import algorithms.balanceAlgorithms.*;
 import algorithms.cpuAlgorithms.CpuAlgorithm;
-import algorithms.cpuAlgorithms.RR;
-import algorithms.cpuAlgorithms.SJF;
 import algorithms.cpuAlgorithms.SRTF;
 import algorithms.frameAllocationAlgorithms.*;
 import algorithms.memAlgorithms.CSCAN;
 import algorithms.memAlgorithms.MemAlgorithm;
-import algorithms.memAlgorithms.SCAN;
-import algorithms.memAlgorithms.SSTF;
 import algorithms.ramAlgorithms.*;
 import computer.*;
-import simulation.SimulationParameters;
-import statistics.StatisticsHandler;
+import statistics.IterationStatisticsHandler;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -67,6 +62,6 @@ public class MainTask4 {
 
             System.out.println("\n\nFINISHED!");
             System.out.println("TIME ELAPSED: "+ Duration.between(start, finish));
-            StatisticsHandler.printStatistics();
+            IterationStatisticsHandler.printStatistics();
     }
 }

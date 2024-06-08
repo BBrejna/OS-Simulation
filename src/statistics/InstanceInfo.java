@@ -35,17 +35,17 @@ public class InstanceInfo {
         double memRejectedContribution = 0;
         double ramPageErrorsContribution = 0;
 
-        if (StatisticsHandler.maxAvgWaitTime != 0) {
-            waitTimeContribution = avgWaitTime/StatisticsHandler.maxAvgWaitTime*0.7;
-        } else waitTimeContribution = 0.7;
+        if (IterationStatisticsHandler.maxAvgWaitTime != 0) {
+            waitTimeContribution = avgWaitTime/ IterationStatisticsHandler.maxAvgWaitTime*0.85;
+        } else waitTimeContribution = 0.85;
 
-        if (StatisticsHandler.maxRejectedMemRequests != 0) {
-            memRejectedContribution = 1.*memRejected/StatisticsHandler.maxRejectedMemRequests*0.1;
-        } else memRejectedContribution = 0.1;
+        if (IterationStatisticsHandler.maxRejectedMemRequests != 0) {
+            memRejectedContribution = 1.*memRejected/ IterationStatisticsHandler.maxRejectedMemRequests*0.05;
+        } else memRejectedContribution = 0.05;
 
-        if (StatisticsHandler.maxNoPageErrors != 0) {
-            ramPageErrorsContribution = 1.*ramPageErrors/StatisticsHandler.maxNoPageErrors*0.2;
-        } else ramPageErrorsContribution = 0.2;
+        if (IterationStatisticsHandler.maxNoPageErrors != 0) {
+            ramPageErrorsContribution = 1.*ramPageErrors/ IterationStatisticsHandler.maxNoPageErrors*0.1;
+        } else ramPageErrorsContribution = 0.1;
 
         return waitTimeContribution+memRejectedContribution+ramPageErrorsContribution;
     }

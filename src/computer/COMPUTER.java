@@ -1,13 +1,10 @@
 package computer;
 
-import algorithms.ramAlgorithms.RamTask;
 import simulation.SimulationParameters;
 import statistics.InstanceInfo;
-import statistics.StatisticsHandler;
+import statistics.IterationStatisticsHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 public class COMPUTER {
@@ -171,6 +168,6 @@ public class COMPUTER {
 //        System.out.println("HDD steps done: " + COMPUTER.memSch.algorithm.getSteps());
 //        System.out.println("HDD rejected priority: " + COMPUTER.memSch.algorithm.getRejected());
 
-        StatisticsHandler.registerInstance(new InstanceInfo(processesNumber, COMPUTER.curTime, balanceAlgoName, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
+        IterationStatisticsHandler.registerInstance(new InstanceInfo(processesNumber, COMPUTER.curTime, balanceAlgoName, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
     }
 }
