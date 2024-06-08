@@ -44,6 +44,22 @@ public class CpuScheduler {
             }
 
         }
+
+        for (int i = 0; i < COMPUTER.processorsNumber; i++) {
+            Double curAvg = COMPUTER.avgCpuLoad.get(i);
+
+            int curTime = COMPUTER.curTime+1;
+
+            curAvg *= 1.*(curTime-1)/curTime;
+
+            curAvg += 1.*COMPUTER.cpuLoad.get(i)/curTime;
+
+            COMPUTER.avgCpuLoad.set(i, curAvg);
+        }
+    }
+
+    public void restartTime() {
+        balanceAlgorithm.restartTime();
     }
 
 }

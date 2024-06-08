@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class COMPUTER {
     public static ProcessProvider provider;
-    private final CpuScheduler cpuSch;
+    private static CpuScheduler cpuSch;
     private static MemScheduler memSch;
 
     //frame allocation
@@ -31,17 +31,19 @@ public class COMPUTER {
     /*SOMETHING*/
     public static ArrayList<ArrayList<Process>> waitingList = new ArrayList<>();
     public static ArrayList<Double> cpuLoad = new ArrayList<>();
+    public static ArrayList<Double> avgCpuLoad = new ArrayList<>();
 
 
 
     public COMPUTER(ProcessProvider provider, CpuScheduler cpuSch, MemScheduler memSch, RamScheduler ramSch) {
         COMPUTER.provider = provider;
-        this.cpuSch = cpuSch;
+        COMPUTER.cpuSch = cpuSch;
         COMPUTER.memSch = memSch;
         COMPUTER.ramSch = ramSch;
         processorsNumber = SimulationParameters.PROCESSORS_NUMBER;
 
         cpuLoad = new ArrayList<>();
+        avgCpuLoad = new ArrayList<>();
         for (int i = 0; i < processorsNumber; i++) {
             activeList.add(new ArrayList<>());
             finishedList.add(new ArrayList<>());
@@ -49,6 +51,7 @@ public class COMPUTER {
             /*SOMETHING*/
             waitingList.add(new ArrayList<>());
             cpuLoad.add(0.);
+            avgCpuLoad.add(0.);
         }
 
 
@@ -111,6 +114,7 @@ public class COMPUTER {
     public void restartTime() {
         clearLists();
         provider.restartTime();
+        cpuSch.restartTime();
         memSch.restartTime();
         ramSch.restartTime();
         curTime=0;
@@ -131,6 +135,21 @@ public class COMPUTER {
         else if (memSch.algorithm.MODE == 2) memAlgoName += " + fd-scan";
         String ramAlgoName = ramSch.algorithm.getClass().getSimpleName();
         String frameAllocatorName = ramSch.frameAllocator.algorithm.getClass().getSimpleName();
+
+        int balancerMigrations = COMPUTER.cpuSch.balanceAlgorithm.migrationsNumber;
+        int balancerLoadQueries = COMPUTER.cpuSch.balanceAlgorithm.loadQueries;
+
+        double avgProcessorsLoad = 0.;
+        double avgProcessorsLoadStdDev = 0.;
+        for (int i = 0; i < processorsNumber; i++) {
+            avgProcessorsLoad += avgCpuLoad.get(i);
+            avgProcessorsLoadStdDev += Math.pow(avgCpuLoad.get(i),2);
+        }
+        avgProcessorsLoad /= processorsNumber;
+        avgProcessorsLoadStdDev /= processorsNumber;
+        avgProcessorsLoadStdDev -= Math.pow(avgProcessorsLoad, 2);
+        avgProcessorsLoadStdDev = Math.sqrt(avgProcessorsLoadStdDev);
+
         int memStepsDone = COMPUTER.memSch.algorithm.getSteps();
         int memRejected = COMPUTER.memSch.algorithm.getRejected();
         int ramPageErrors = COMPUTER.ramSch.algorithm.getPageErrorsNumber();
@@ -168,6 +187,6 @@ public class COMPUTER {
 //        System.out.println("HDD steps done: " + COMPUTER.memSch.algorithm.getSteps());
 //        System.out.println("HDD rejected priority: " + COMPUTER.memSch.algorithm.getRejected());
 
-        IterationStatisticsHandler.registerInstance(new InstanceInfo(processesNumber, COMPUTER.curTime, balanceAlgoName, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
+        IterationStatisticsHandler.registerInstance(new InstanceInfo(processesNumber, COMPUTER.curTime, balanceAlgoName, cpuAlgoName, memAlgoName, ramAlgoName, frameAllocatorName, balancerLoadQueries, balancerMigrations, avgProcessorsLoad, avgProcessorsLoadStdDev, avg_turnaround, avg_wait, memStepsDone, memRejected, ramPageErrors));
     }
 }

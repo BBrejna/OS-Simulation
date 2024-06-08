@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public abstract class BalanceAlgorithm {
     protected int totalProcessors;
+    public int loadQueries;
+    public int migrationsNumber;
 
     public BalanceAlgorithm() {
         this.totalProcessors = SimulationParameters.PROCESSORS_NUMBER;
@@ -28,6 +30,7 @@ public abstract class BalanceAlgorithm {
     public void assignProcessToProcessor(int processorId, Process process) {
         COMPUTER.activeList.get(processorId).add(process);
         COMPUTER.cpuLoad.set(processorId, COMPUTER.cpuLoad.get(processorId) + process.loadOnProcessor);
+        if (processorId != process.getCpuId() || process.getCpuTime() != process.getRemainingTime()) migrationsNumber++;
     }
     public void migrateRandomProcess(int sourceProcessorId, int destinationProcessorId) {
         Process process = COMPUTER.activeList.get(sourceProcessorId).getLast();
@@ -35,7 +38,14 @@ public abstract class BalanceAlgorithm {
         assignProcessToProcessor(destinationProcessorId, process);
     }
 
+    public void restartTime() {
+        totalProcessors = SimulationParameters.PROCESSORS_NUMBER;
+        loadQueries = 0;
+        migrationsNumber = 0;
+    }
+
     public double getProcessorLoad(int processorId) {
+        loadQueries++;
         return COMPUTER.cpuLoad.get(processorId);
     }
 
