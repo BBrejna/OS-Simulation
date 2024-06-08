@@ -27,7 +27,7 @@ public class IterationStatisticsHandler {
         separator.append("-".repeat(192));
         separator.append("%n");
 
-        String format = "| %-8s | %7s | %7s | %6s | %8s | %-6s | %-15s | %-8s | %-8s | %5s | %7s | %9s | %9s | %9s | %4s | %7s | %9s | %4s |%n";
+        String format = "| %-8s | %7s | %7s | %7s | %8s | %-6s | %-15s | %-8s | %-8s | %5s | %7s | %9s | %9s | %9s | %4s | %7s | %9s | %4s |%n";
 
         System.out.printf(separator.toString());
         System.out.printf(" Iteration statistics %n");
