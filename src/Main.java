@@ -63,7 +63,7 @@ public class Main {
 
                                 Instant middle = Instant.now();
 
-                                System.out.println("ITERATION "+iterationNumber+":\t"+(++iterator) + "/" + numOfCombinations + " DONE. TIME ELAPSED: " + Duration.between(start, middle));
+                                System.out.println("ITERATION "+iterationNumber+"/"+SimulationParameters.ITERATIONS_NUMBER+":\t"+(++iterator) + "/" + numOfCombinations + " DONE. TIME ELAPSED: " + Duration.between(start, middle));
                             }
                         }
                     }
