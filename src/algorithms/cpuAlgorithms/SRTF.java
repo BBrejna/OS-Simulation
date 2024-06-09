@@ -5,16 +5,13 @@ import computer.Process;
 
 public class SRTF extends CpuAlgorithm {
 
-    public SRTF(ArrayList<Process> processesList) {
-        super(processesList);
-    }
     public SRTF() {
-        this(new ArrayList<>());
+        super();
     }
 
-    public Process getActiveProcess() {
-        Process shortest = processesList.getFirst();
-        for (Process p : processesList) {
+    public Process getActiveProcess(Integer processorId) {
+        Process shortest = processesList.get(processorId).getFirst();
+        for (Process p : processesList.get(processorId)) {
             if (p.getRemainingTime() < shortest.getRemainingTime()) {
                 shortest = p;
             }

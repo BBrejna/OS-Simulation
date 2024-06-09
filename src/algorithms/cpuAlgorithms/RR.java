@@ -6,31 +6,50 @@ import simulation.SimulationParameters;
 
 public class RR extends CpuAlgorithm {
     public static int deltaTime = SimulationParameters.RR_DELTA_TIME;
-    int index;
-    int remainingDelta;
+    ArrayList<Integer> index = new ArrayList<>();
+    ArrayList<Integer> remainingDelta = new ArrayList<>();
 
-    public RR(ArrayList<Process> processesList) {
-        super(processesList);
-        index = 0;
-        remainingDelta = deltaTime;
-    }
     public RR() {
-        this(new ArrayList<>());
+        super();
+        for (int i = 0; i < SimulationParameters.PROCESSORS_NUMBER; i++) {
+            index.add(0);
+            remainingDelta.add(deltaTime);
+        }
     }
 
-    public Process getActiveProcess() {
-        if (index >= processesList.size()) {
-            index = 0;
-            remainingDelta = deltaTime;
+    public Process getActiveProcess(Integer processorId) {
+        Integer indexP = index.get(processorId);
+        Integer remainingDeltaP = remainingDelta.get(processorId);
+        ArrayList<Process> processesListP = processesList.get(processorId);
+
+        if (indexP >= processesListP.size()) {
+            indexP = 0;
+            remainingDeltaP = deltaTime;
         }
 
-        if (remainingDelta == 0) {
-            remainingDelta = deltaTime;
-            index++;
+        if (remainingDeltaP == 0) {
+            remainingDeltaP = deltaTime;
+            indexP++;
         }
 
-        if (index >= processesList.size()) index = 0;
-        remainingDelta--;
-        return processesList.get(index);
+        if (indexP >= processesListP.size()) indexP = 0;
+
+        remainingDeltaP--;
+
+        index.set(processorId, indexP);
+        remainingDelta.set(processorId, remainingDeltaP);
+
+        return processesListP.get(indexP);
+    }
+
+    @Override
+    public void restartTime() {
+        super.restartTime();
+        index = new ArrayList<>();
+        remainingDelta = new ArrayList<>();
+        for (int i = 0; i < SimulationParameters.PROCESSORS_NUMBER; i++) {
+            index.add(0);
+            remainingDelta.add(deltaTime);
+        }
     }
 }

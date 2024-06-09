@@ -36,10 +36,10 @@ public class CpuScheduler {
                     i--;
                 }
             }
-            algorithm.updateList(activeList);
+            algorithm.updateList(processorId, activeList);
 
             if (!activeList.isEmpty()) {
-                Process p = algorithm.getActiveProcess();
+                Process p = algorithm.getActiveProcess(processorId);
                 p.doStep();
             }
 
@@ -59,6 +59,7 @@ public class CpuScheduler {
     }
 
     public void restartTime() {
+        algorithm.restartTime();
         balanceAlgorithm.restartTime();
     }
 
